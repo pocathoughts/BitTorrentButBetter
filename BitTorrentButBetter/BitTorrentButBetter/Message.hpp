@@ -41,11 +41,11 @@ enum MessageType {
     CHOKE,
     UNCHOKE,
     INTERESTED,
-    not_interested,
-    have,
-    bitfield,
-    request,
-    piece
+    NOTINTERESTED,
+    HAVE,
+    BITFIELD,
+    REQUEST,
+    PIECE
     
 };
 
