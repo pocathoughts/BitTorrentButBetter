@@ -11,28 +11,36 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <boost/multiprecision/cpp_int.hpp> //for uint256_t
+#include <bitset>
+using namespace std;
+//#include <boost/multiprecision/cpp_int.hpp> //for uint256_t
 
 
 class Message
 {
+typedef bitset<8> BYTE;
+typedef bitset<256> EIGHTBYTE;
+    
 private:
-    BYTE messageType;
-    BYTE payload;
+    int messageType;
+    uint32_t payload;
     int messageLength;
     
 public:
-    Message(byte messageType, byte[] messagePayload);
-    uint256_t CreateHandshakeMessage(uint32_t peerID);
+    Message(BYTE messageType, BYTE[] payload);
+    EIGHTBYTE CreateHandshakeMessage(uint32_t peerID);
     uint32_t GenerateEmptyPayload();
     Peer SendHandshakeMessage(Peer otherPeer);
     Peer SendActualMessage(MessageType type);
-    uint256_t GenerateMessage(uint32_t messageLength, MessageType type, unit32_t payload);
+    EIGHTBYTE GenerateMessage(uint32_t messageLength, MessageType type, uint32_t payload);
     bool hasPayload();
+    uint32_t GenerateBitfieldPayload(ListOfPieces pieces);
+    uint32_t GenerateHavePayload(Huh);
+    uint32_t GenerateRequestPayload(Huh);
+    uint32_t GeneratePiecePayload(Huh);
     
-    // i have these listed as ints bu they need to be bytes
     int getMessageType();
-    int getPayload();
+    uint32_t getPayload();
 };
 
 // message type enum for reference

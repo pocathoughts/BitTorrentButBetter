@@ -10,14 +10,14 @@
 //
 //  Also includes handling the first initial handshake message
 
-#include "Message.hpp"
+#include "Message.h"
 
 
-BYTE getMessageType(){
+int getMessageType(){
     return messageType;
 }
 
-BYTE[] getPayload(){
+uint32_t getPayload(){
     return payload;
 }
 
@@ -29,10 +29,8 @@ bool hasPayload(){
 }
 
 
-
-
 //constructor
-public Message(byte* payload, byte messageType) {
+Message(BYTE[] payload, byte messageType) {
     this.messagePayload = messagePayload;
     this.messageType = messageType;
     messageLength =  1 + messagePayload.length;
@@ -40,21 +38,43 @@ public Message(byte* payload, byte messageType) {
 
 
 
+EIGHTBYTE CreateHandshakeMessage(uint32_t peerID){
 
 
-public NEEDSTORETURNBYTES makeHandshake(int peerID){
-    ByteBuffer message = ByteBuffer.allocate(32);
-    
-    byte[] hello = ("HELLO").getBytes();
-    ByteBuffer zeros = ByteBuffer.allocate(23);
-    
-    message.put(hello);
-    message.put(zeros.array());
-    message.putInt(peerid);
-    
-    return message.array();
 }
 
 
+Peer SendHandshakeMessage(Peer otherPeer){
+    
+}
 
-public
+Peer SendActualMessage(MessageType type){
+
+}
+
+EIGHTBYTE GenerateMessage(uint32_t messageLength, MessageType type, uint32_t payload){
+
+}
+
+uint32_t GenerateEmptyPayload(){
+
+}
+
+
+uint32_t GenerateBitfieldPayload(ListOfPieces pieces){
+
+}
+
+
+uint32_t GenerateHavePayload(Huh){
+
+}
+
+uint32_t GenerateRequestPayload(Huh){
+
+}
+
+uint32_t GeneratePiecePayload(Huh){
+
+}
+
