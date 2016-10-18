@@ -5,7 +5,7 @@
 //  BitTorrentButBetter
 //
 //  Created by Pocahantas Moore on 10/17/16.
-//  Copyright © 2016 Christine Moore. All rights reserved.
+//  Copyright ï¿½ 2016 Christine Moore. All rights reserved.
 //
 //  Obviously this is not a complete file, i tried my best to make
 //  this generic enough that anyone could use this
@@ -84,38 +84,51 @@ std::vector<OURBYTE> Message::GeneratePayload(int type)
 	return NEEDSTOBEIMPLEMENTED;
 }
 
-//EIGHTBYTE GenerateMessage(uint32_t messageLength, MessageType type, uint32_t payload) {
+std::vector<OURBYTE> Message::GenerateMessage(uint32_t messageLength, MessageType type, uint32_t payload) {
+	for(int i =0; i<4; i++){
+		fullMessage[i] = messageLength >> (24-(i*8)); //big endian
+	}
+	fullMessage[4] = type;
+	for(int i =5; i<9; i++){
+		fullMessage[i] = messageLength >> (24-((i-5)*8));
+	}
+}
 //
-//}
+//
+std::vector<OURBYTE> Message::GenerateBitfieldPayload(/*ListOfPieces pieces*/) {
+		for(int i =5; i<7; i++){
+			//fullMessage[i] = pieces;
+		}
+		fullMessage[7] = 0;
+		fullMessage[8] = 0;
+}
 
-//uint32_t GenerateEmptyPayload() {
-//
-//}
-//
-//
-//uint32_t GenerateBitfieldPayload(/*ListOfPieces pieces*/) {
-//
-//}
-//
-//
-//uint32_t GenerateHavePayload() {
-//
-//}
-//
-//uint32_t GenerateRequestPayload() {
-//
-//}
-//
-//uint32_t GeneratePiecePayload() {
-//
-//}
+std::vector<OURBYTE> Message::GenerateHavePayload(/*variable indexPieces*/) {
+	for(int i =5; i<9; i++){
+		//fullMessage[i] = indexPieces >> (24-((i-5)*8));
+	}
+}
+
+std::vector<OURBYTE> Message::GenerateRequestPayload(/*variable indexPieces*/) {
+	for(int i =5; i<9; i++){
+		//fullMessage[i] = indexPieces >> (24-((i-5)*8));
+	}
+}
+
+std::vector<OURBYTE> Message::GeneratePiecePayload(/*variable indexPieces, variable content*/ ) {
+	for(int i =5; i<9; i++){
+		//fullMessage[i] = indexPieces >> (24-((i-5)*8));
+	}
+	//not sure how the content of the piece should be added
+	//since the the message should just be 32 bits - Lara
+}
 
 HandshakeMessage::HandshakeMessage(int _peerID)
 {
-	std::vector<OURBYTE> handshakeHeader; //18 bytes 
+	std::vector<OURBYTE> handshakeHeader; //18 bytes
 	std::vector<OURBYTE> zeroBytes; //10 zero bytes
 	std::vector<OURBYTE> peerID; //4 bytes
-	//‘P2PFILESHARINGPROJ'
+	//ï¿½P2PFILESHARINGPROJ'
 	lib = new utilLib();
 	handshakeHeader = lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
 	peerID = lib->GetByteStreamFromInt(_peerID);

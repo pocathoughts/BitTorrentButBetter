@@ -8,9 +8,9 @@
 class Message
 {
 private:
-	std::vector<OURBYTE> messageLength; // 4 bytes
-	OURBYTE messageTypeField; //1 byte
-	std::vector<OURBYTE> messagePayload; //variable length, (0s if empty)
+	//std::vector<OURBYTE> messageLength; // 4 bytes
+	//OURBYTE messageTypeField; //1 byte
+	//std::vector<OURBYTE> messagePayload; //variable length, (0s if empty)
 	utilLib * lib;
 	std::vector<OURBYTE> fullMessage;
 	std::vector<OURBYTE> DetermineMessageLength();
@@ -26,7 +26,7 @@ public:
 class HandshakeMessage
 {
 public:
-	
+
 	HandshakeMessage(int _peerID);
 	std::vector<OURBYTE> GetHandshakeMessageByteStream();
 private:
@@ -34,4 +34,3 @@ private:
 	void GenerateHandshakeMessageByteStream(std::vector<OURBYTE> _header, std::vector<OURBYTE> _peerID);
 	utilLib * lib;
 };
-
