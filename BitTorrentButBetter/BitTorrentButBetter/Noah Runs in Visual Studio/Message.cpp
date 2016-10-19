@@ -11,14 +11,26 @@
 //  this generic enough that anyone could use this
 //
 //  Also includes handling the first initial handshake message
+//
+//  Reminder for the normal messages (Laura wrote this, Christine just copy/pasting)
+//  0-3rd byte =message length
+//  4th byte = message type
+//  then the last 32 bits (5th-9th bytes) are the payload/bitfield depending on the message
 
 #include "Message.h"
 
-
+// TODO
+// im getting errors in the return type
+// saying: undeclared identifier, but they are
+// identified in the header. halp
 int getMessageType() {
 	return messageType;
 }
 
+// TODO
+// im getting errors in the return type
+// saying: undeclared identifier, but they are
+// identified in the header. halp
 uint32_t getPayload() {
 	return payload;
 }
@@ -38,6 +50,19 @@ Message::Message(int type) {
 	messageLength = 1 + messagePayload.length;*/
 	lib = new utilLib();
 	GenerateActualMessageByteStream(type);
+}
+
+
+std::vector<OUTBYTE> compareBitfields(std::vector<OURBYTE> incomingMessage){
+    // taking variable fullMessage as our message
+    std::vector<OURBYTE> ourBitfield;
+    std::vector<OURBYTE> theirBitfield;
+    for(int i = 5; i < 10; i++){
+        ourBitfield.push_back(fullMessage[i]);
+        theirBitfield.push_back(incomingMessage[i]);
+    }
+    
+    return true;
 }
 
 void Message::GenerateActualMessageByteStream(int type)
@@ -66,6 +91,8 @@ void Message::GenerateActualMessageByteStream(int type)
 	}
 	//the rest should automatically be 0
 }
+
+
 std::vector<OURBYTE> Message::DetermineMessageLength()
 {
 	//rewrite this function to return the message length, this is for compilation
@@ -77,6 +104,8 @@ std::vector<OURBYTE> Message::DetermineMessageLength()
 	}
 	return NEEDSTOBEIMPLEMENTED;
 }
+
+
 std::vector<OURBYTE> Message::GeneratePayload(int type)
 {
 	//rewrite this function to return the payload, this is for compilation
@@ -90,11 +119,12 @@ std::vector<OURBYTE> Message::GenerateMessage(uint32_t messageLength, MessageTyp
 	}
 	fullMessage[4] = type;
 	for(int i =5; i<9; i++){
+        // does this need a different index? like should i below start at zero?
 		fullMessage[i] = messageLength >> (24-((i-5)*8));
 	}
 }
-//
-//
+
+
 std::vector<OURBYTE> Message::GenerateBitfieldPayload(/*ListOfPieces pieces*/) {
 		for(int i =5; i<7; i++){
 			//fullMessage[i] = pieces;
@@ -103,25 +133,31 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(/*ListOfPieces pieces*/) {
 		fullMessage[8] = 0;
 }
 
+
 std::vector<OURBYTE> Message::GenerateHavePayload(/*variable indexPieces*/) {
 	for(int i =5; i<9; i++){
 		//fullMessage[i] = indexPieces >> (24-((i-5)*8));
 	}
 }
 
+
 std::vector<OURBYTE> Message::GenerateRequestPayload(/*variable indexPieces*/) {
 	for(int i =5; i<9; i++){
+        // does this need a different index? like should i below start at zero?
 		//fullMessage[i] = indexPieces >> (24-((i-5)*8));
 	}
 }
 
+
 std::vector<OURBYTE> Message::GeneratePiecePayload(/*variable indexPieces, variable content*/ ) {
 	for(int i =5; i<9; i++){
-		//fullMessage[i] = indexPieces >> (24-((i-5)*8));
+        // should the above be till i <10
+        //fullMessage[i] = indexPieces >> (24-((i-5)*8));
 	}
 	//not sure how the content of the piece should be added
 	//since the the message should just be 32 bits - Lara
 }
+
 
 HandshakeMessage::HandshakeMessage(int _peerID)
 {
@@ -134,6 +170,8 @@ HandshakeMessage::HandshakeMessage(int _peerID)
 	peerID = lib->GetByteStreamFromInt(_peerID);
 	GenerateHandshakeMessageByteStream(handshakeHeader, peerID);
 }
+
+
 void HandshakeMessage::GenerateHandshakeMessageByteStream(std::vector<OURBYTE> header, std::vector<OURBYTE> peerID)
 {
 	//header
@@ -157,6 +195,7 @@ void HandshakeMessage::GenerateHandshakeMessageByteStream(std::vector<OURBYTE> h
 		fullMessage.push_back(currentByte);
 	}
 }
+
 
 std::vector<OURBYTE> HandshakeMessage::GetHandshakeMessageByteStream()
 {

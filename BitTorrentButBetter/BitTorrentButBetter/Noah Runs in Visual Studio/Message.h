@@ -17,9 +17,11 @@ private:
 	void GenerateActualMessageByteStream(int type);
 	std::vector<OURBYTE> GeneratePayload(int type);
 	bool hasPayload(int messageType);
+    // i know it doesnt need to be bool but i put bool for now
+    std::vector<OURBYTE> compareBitfields(std::vector<OURBYTE>);
     int messageType;
     uint32_t payload;
-
+    std::vector<OURBYTE> bitField;
 
 public:
 	Message(int type);
