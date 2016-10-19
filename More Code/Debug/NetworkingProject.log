@@ -1,0 +1,9 @@
+﻿  NetworkingProject.cpp
+c:\users\noah\documents\visual studio 2015\projects\networkingproject\networkingproject\utillib.h(57): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah\documents\visual studio 2015\projects\networkingproject\networkingproject\networkingproject.cpp(36): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah\documents\visual studio 2015\projects\networkingproject\networkingproject\networkingproject.cpp(88): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah\documents\visual studio 2015\projects\networkingproject\networkingproject\networkingproject.cpp(141): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\noah\documents\visual studio 2015\projects\networkingproject\networkingproject\networkingproject.cpp(177): warning C4018: '<': signed/unsigned mismatch
+c:\users\noah\documents\visual studio 2015\projects\networkingproject\networkingproject\networkingproject.cpp(209): warning C4715: 'DetermineIndexOfIDInCFGFile': not all control paths return a value
+  NetworkingProject.vcxproj -> C:\Users\Noah\Documents\Visual Studio 2015\Projects\NetworkingProject\Debug\NetworkingProject.exe
+  NetworkingProject.vcxproj -> C:\Users\Noah\Documents\Visual Studio 2015\Projects\NetworkingProject\Debug\NetworkingProject.pdb (Full PDB)
