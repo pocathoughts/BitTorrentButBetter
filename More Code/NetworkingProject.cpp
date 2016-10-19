@@ -244,7 +244,7 @@ void ssh(char * hostname)
 	cmd = "putty -ssh ";
 	string s1 = cmd;
 	string s2 = hostname;
-	char * restOfCommand = " -l npresser -pw Xcvbnm,./";
+	char * restOfCommand = " -l npresser -pw well i fucked that up";
 	string s3 = restOfCommand;
 	s1 = s1 + s2 + s3;
 	char * a = _strdup(s1.c_str());
