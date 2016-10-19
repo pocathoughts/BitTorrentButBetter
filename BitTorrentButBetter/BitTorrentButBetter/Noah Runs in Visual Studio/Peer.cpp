@@ -1,53 +1,68 @@
 #include "stdafx.h"
 #include "Peer.h"
+#include "Message.h"
 
 Peer::Peer()
 {
-	optomisticallyUnchokedNeighbor = NULL;
+    // lolz love the name
+    optomisticallyUnchokedNeighbor = NULL;
+    ownPeerID = 0;
+    std::vector<Peer*> otherPeers;
 }
 
 void Peer::SendHandshakeMessage(Peer * otherPeer)
 {
-
+    // need to create handshake message first
+    HandshakeMessage* hsm = new HandshakeMessage(ownPeerID);
+    
+    // TODO
+    // now find way to actually send it, need the output stream
+    
 }
+
 void Peer::SendActualMessage(int type)
 {
-
+    // TODO
+    // find a way to actually send it, need ouptut stream
 }
+
 void Peer::EstablishConnection(Peer * otherPeer)
 {
-	//go to peerinfo.cfg to establish connections w/ peers above it
-	//after establishing TCP connection, send handshake message to other peer
+    // code to connect to other peer's socket
 }
+
 void Peer::ReceiveHandshakeMessage(Message m)
 {
-	//check handshake header peerID and make sure its expected
+    std::vector<OURBYTE> payload = m.getPayload();
+    // TODO
+    // need the inputstream to get this or have it handled elsewhere
 }
+
 void Peer::ReceiveActualMessage(Message m, Peer * sender)
 {
-	//bitfield message after handshake: check for new pieces, send interested or
-	//not interested
+    
 }
+
 void Peer::DeterminePreferredNeighbors()
 {
-	//# of preferred neighbors in common.cfg
-	//this functioned should be called after every p seconds in common.cfg
-	//check download rate of peers from prev unchoking interval
-	//send unchoke/choke messages to selected peers
+    
 }
+
 void Peer::DetermineOptomisticallyUnchokedNeighbor()
 {
-
+    
 }
+
 void Peer::DetermineInterested()
 {
-	//if peer has received message type = 'bitfield' or 'have' AND bitfields differ
+    
 }
+
 Peer::~Peer()
 {
-	delete optomisticallyUnchokedNeighbor;
-	for (std::vector<Peer*>::iterator i = otherPeers.begin(); i < otherPeers.end(); i++)
-	{
-		delete (*i);
-	}
+    delete optomisticallyUnchokedNeighbor;
+    for (std::vector<Peer*>::iterator i = otherPeers.begin(); i < otherPeers.end(); i++)
+    {
+        delete (*i);
+    }
 }
