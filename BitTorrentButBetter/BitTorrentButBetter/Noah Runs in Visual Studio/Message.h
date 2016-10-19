@@ -17,12 +17,16 @@ private:
 	void GenerateActualMessageByteStream(int type);
 	std::vector<OURBYTE> GeneratePayload(int type);
 	bool hasPayload(int messageType);
+    int messageType;
+    uint32_t payload;
 
 
 public:
 	Message(int type);
 	std::vector<OURBYTE> GetActualMessageByteStream();
 };
+
+
 class HandshakeMessage
 {
 public:

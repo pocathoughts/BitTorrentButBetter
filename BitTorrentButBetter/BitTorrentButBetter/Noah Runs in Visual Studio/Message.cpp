@@ -15,13 +15,13 @@
 #include "Message.h"
 
 
-//int getMessageType() {
-//	return messageType;
-//}
+int getMessageType() {
+	return messageType;
+}
 
-//uint32_t getPayload() {
-//	return payload;
-//}
+uint32_t getPayload() {
+	return payload;
+}
 
 
 // could be useful
