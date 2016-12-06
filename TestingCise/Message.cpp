@@ -59,6 +59,7 @@ Message::Message(int type, bool hasPiece, std::vector<bool> listOfPieces, int re
 	/*messagePayload = messagePayload;
 	messageType = type;
 	messageLength = 1 + messagePayload.length;*/
+	std::cout << "message constructor\n";
 	lib = new utilLib();
 	GenerateActualMessageByteStream(type, hasPiece, listOfPieces, requestedIndex);
 }
@@ -67,7 +68,9 @@ Message::Message(int type, bool hasPiece, std::vector<bool> listOfPieces, int re
 //most central message function
 void Message::GenerateActualMessageByteStream(int type, bool hasPiece, std::vector<bool> listOfPieces, int requestedIndex)
 {
+	std::cout << "generate bytestream\n";
 	std::vector<OURBYTE> payload = GeneratePayload(type, hasPiece, listOfPieces, requestedIndex);
+	std::cout << "generate bytestream 2\n";
 	std::vector<OURBYTE> messageLength = DetermineMessageLength();
 
 	//messageLength
@@ -118,6 +121,7 @@ std::vector<OURBYTE> Message::DetermineMessageLength()
 //different message types mean a different type of payload
 std::vector<OURBYTE> Message::GeneratePayload(int type, bool hasPiece, std::vector<bool> listOfPieces, int requestedIndex)
 {
+	std::cout << "gen payload\n";
 	std::vector<OURBYTE> payload;
 	//rewrite this function to return the payload, this is for compilation
 	//std::vector<OURBYTE> NEEDSTOBEIMPLEMENTED(0);
