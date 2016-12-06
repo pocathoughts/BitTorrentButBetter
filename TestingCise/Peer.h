@@ -24,13 +24,8 @@ public:
 
 	void CreateBitfield();
 	
-	void SendActualMessage(int type);
-	void EstablishConnection(Peer * otherPeer);
-	void ReceiveMessage(std::vector<OURBYTE> receivedMessage);
 	void AwaitMessage(int sockfd);
 	bool receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int sockfd);
-	void ClientReceiveReturnHandshakeMessage(std::vector<OURBYTE> receivedMessage, int expectedPeerID);
-	void ReceiveActualMessage(std::vector<OURBYTE> receivedMessage);
 	void DeterminePreferredNeighbors();
 	void DetermineOptomisticallyUnchokedNeighbor();
 
@@ -99,6 +94,8 @@ private:
 
 	//message handling
 	void DetermineInterested(std::vector<OURBYTE> messageStream, int sockfd);
+	void SendInterestedMessage(int sockfd);
+	void SendNotInterestedMessage(int sockfd);
 	void receiveUnchokeMessage(std::vector<OURBYTE> messageStream);
 	void receiveChokeMessage(std::vector<OURBYTE> messageStream);
 	void receiveInterestedMessage(std::vector<OURBYTE> messageStream);
