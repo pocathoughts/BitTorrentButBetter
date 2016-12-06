@@ -48,9 +48,8 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	//comment back in once you can remotely start servers from other machines
 	InitializeTCPConnections(preexistingPeers);
 }
-
 //for the other peers, won't initialize any connections
-void Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete)
+Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete)
 {
 	peerID = _peerID;
 	hostName = _hostName;
