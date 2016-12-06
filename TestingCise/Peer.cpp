@@ -726,13 +726,8 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 void Peer::DetermineInterested(std::vector<OURBYTE> messageStream)
 {
 	//we're dealing with a bitfield message, we need to access the payload, which is from bytes 5 to the end()
-	//std::vector<OURBYTE>::iterator first = messageStream.begin() + 5;
-	//std::vector<OURBYTE>::iterator last = messageStream.begin() + 32; //first 18 bytes
-	std::cout << "Determining interest 0\n";
-	std::vector<OURBYTE> bitfieldPayload(messageStream.begin() + 5, messageStream.end());
-	std::cout << "Determining interest 1\n";
 	int counter = 0;
-	for (std::vector<OURBYTE>::iterator i = bitfieldPayload.begin(); i < bitfieldPayload.end(); i++)
+	for (std::vector<OURBYTE>::iterator i = messageStream.begin() + 5; i < messageStream.end(); i++)
 	{
 		//for each bit
 		for (int j = 0; j < 8; j++) {
