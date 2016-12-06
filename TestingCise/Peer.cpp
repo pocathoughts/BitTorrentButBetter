@@ -60,6 +60,7 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 	//START OF HARD CODING FOR TESTING FIRST CONNECTIONS
 	if (peerID == 1002)
 	{
+		std::cout << "num peers: " << preexistingPeers.size();
 		std::cout << "hard code, still need to test multiple users running server and client at same time...\n";
 		for (std::vector<Peer*>::iterator i = preexistingPeers.begin(); i < preexistingPeers.end(); i++)
 		{
