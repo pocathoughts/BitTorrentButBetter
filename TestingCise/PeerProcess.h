@@ -7,7 +7,7 @@ using namespace std;
 
 int k;
 std::vector<Peer*> allPeers;
-void initializePeers();
+void initializePeers(int commandLineInputPeerID);
 void initializePeerWithID(int peerID);
 int GetPeerIDFromInput(string line);
 void startPeerProcess(int peerID);

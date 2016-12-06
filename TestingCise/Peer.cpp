@@ -43,16 +43,55 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		//if (listOfPieces[index] == false && (*i) == true) 
 			//get it
 			//listOfPieces[index] = true;
-
-
-
-
-
-
 	CreateBitfield();
 
 	//comment back in once you can remotely start servers from other machines
 	InitializeTCPConnections(preexistingPeers);
+}
+
+//for the other peers, won't initialize any connections
+void Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete)
+{
+	peerID = _peerID;
+	hostName = _hostName;
+	portNum = _portNum;
+	fileComplete = _fileComplete;
+	lib = new utilLib();
+
+	//set neighborlist
+	lib->setNeighborList(GetAndSetListOfNeighbors());
+
+
+	// lolz love the name
+	optomisticallyUnchokedNeighbor = NULL;
+	//std::vector<Peer*> otherPeers = preexistingPeers;
+	//probably best to handle the above upon a successful connection
+	ReadCfgFile();
+	numPieces = ceil((float)fileSize / (float)pieceSize);
+	lastPieceSize = fileSize % pieceSize;
+
+	//initialize all to false
+	if (fileComplete)
+	{
+		for (int i = 0; i < numPieces; i++)
+		{
+			listOfPieces.push_back(true);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < numPieces; i++)
+		{
+			listOfPieces.push_back(false);
+		}
+	}
+
+	//see peer one has piece 0 
+	//receive a message of 306/8 bytes with each bit representing a piece
+	//if (listOfPieces[index] == false && (*i) == true) 
+	//get it
+	//listOfPieces[index] = true;
+	CreateBitfield();
 }
 void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 {

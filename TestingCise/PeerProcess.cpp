@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 	std::vector<OURBYTE> peerIDPortion(first, last);
 	*/
 	//int receivedPeerID = lib->GetIntFromByteStream(peerIDPortion);
-	 
+
 	//other things that are being tested but commented out for now
 	/*
 	lib->reglog(0, lib->getTime(), 1001, 1002);
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 
 	Message * m = new Message(5, true, a, 3);
 	//test things here
-	////testing message passing -- currently works with a some hacky $$$$$$ 
+	////testing message passing -- currently works with a some hacky $$$$$$
 	HandshakeMessage * h = new HandshakeMessage(7);
 	std::vector<OURBYTE> BS = h->GetHandshakeMessageByteStream();
 	char * test = lib->GetStringFromByteStream(BS);
@@ -58,8 +58,8 @@ int GetPeerIDFromInput(string line)
 	int count = 0;
 	for (int i = 0; i < line.length(); i++)
 	{
-			message[count] = line.at(i);
-			count++;
+		message[count] = line.at(i);
+		count++;
 	}
 	message[count] = '\0';
 	return atoi(message);
@@ -91,7 +91,7 @@ void checkInput()
 
 	// This code converts from string to number safely.
 }
-void parsePeerData(std::string line)
+void parsePeerData(std::string line, int commandLineInputPeerID)
 {
 	char * message1 = new char[100]; //peerID
 	char * message2 = new char[100]; //hostName
@@ -151,11 +151,19 @@ void parsePeerData(std::string line)
 			message4[count] = line.at(i);
 			count++;
 		}
+	
+
+	if (atoi(message1) == commandLineInputPeerID)
+	{
+		Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4));
 	}
-	Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4), allPeers);
+	else
+	{
+		Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4), allPeers);
+	}
 	allPeers.push_back(p);
 }
-void initializePeers()
+void initializePeers(int commandLineInputPeerID)
 {
 	std::ifstream loadedFile("PeerInfo.cfg");
 
@@ -166,7 +174,7 @@ void initializePeers()
 		while (loadedFile.good())
 		{
 			std::getline(loadedFile, line);
-			parsePeerData(line);
+			parsePeerData(line, commandLineInputPeerID);
 		}
 	}
 	else
@@ -197,7 +205,7 @@ int DetermineIndexOfIDInCFGFile(int peerID)
 					count++;
 					continue;
 				}
-				
+
 				if (line.at(i) == ' ')
 				{
 					message1[count] = '\0';
@@ -241,7 +249,7 @@ void initializePeerWithID(int peerID)
 			std::getline(loadedFile, line);
 			if (index == indexInCFGFile)
 			{
-				parsePeerData(line);
+				parsePeerData(line, peerID);
 			}
 			index++;
 		}
