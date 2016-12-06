@@ -422,7 +422,7 @@ void Peer::AwaitMessageAndLoop(int sockfd)
 	char * message;
 	//waits for a return handshake message
 	bzero(message, 256);
-	n = read(sockfd, message, 255);
+	n = read(sockfd, message, 256);
 	std::vector<OURBYTE> messageStream = lib->GetByteStreamFromString(message);
 	int type = lib->GetMessageTypeFromStream(messageStream);
 	if (type == 0)
@@ -544,7 +544,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 	}
 	//waits for a return handshake message
 	bzero(message, 256);
-	n = read(sockfd, message, 255);
+	n = read(sockfd, message, 256);
 
 	if (n < 0)
 		error("ERROR writing to socket");
@@ -583,7 +583,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 
 	char * message;
 	bzero(message, 256);
-	n = read(sockfd, message, 255);
+	n = read(sockfd, message, 256);
 	if (n < 0)
 		error("ERROR writing to socket");
 
@@ -629,7 +629,7 @@ void Peer::startServerLinux()
 
 	//receive message
 	bzero(buffer, 256);
-	n = read(newsockfd, buffer, 255);
+	n = read(newsockfd, buffer, 256);
 	//after connection, do the following
 	receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), newsockfd); //await a handshake message
 	SendHandshakeMessageFromServer(newsockfd); //send the handshake message back
@@ -691,13 +691,13 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 
 	//printf("Please enter the message: ");
 	//bzero(buffer, 256);
-	//fgets(buffer, 255, stdin);
+	//fgets(buffer, 256, stdin);
 	//n = write(sockfd, buffer, strlen(buffer));
 	//if (n < 0)
 	//	error("ERROR writing to socket");
 
 	//bzero(buffer, 256);
-	//n = read(sockfd, buffer, 255);
+	//n = read(sockfd, buffer, 256);
 	//if (n < 0)
 	//	error("ERROR reading from socket");
 	//printf("%s\n", buffer);
