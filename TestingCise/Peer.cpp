@@ -587,6 +587,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	char message[256];
 	bzero(message, 255);
 	n = read(sockfd, message, 256);
+	n = read(sockfd, message, 256);
 	if (n < 0)
 		error("ERROR writing to socket");
 
