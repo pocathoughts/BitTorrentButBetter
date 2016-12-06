@@ -222,12 +222,12 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 	std::cout << initialNumberOfBytes << " init bytes" << std::endl;
 	int counter = 0;
 	for (int i = 0; i < initialNumberOfBytes; i++) {
-		OURBYTE currentByte(1);
+		OURBYTE currentByte = OURBYTE(0);
 		for (int j = 0; j < 8; j++) {
 			//setting the value of the bits of the currentByte with
 			//the value of listOfPieces
 			std::cout << "gen bitfieldpayload 3.1\n";
-			//lib->setBit(currentByte, j, listOfPieces[counter]);
+			lib->setBit(currentByte, j, listOfPieces[counter]);
 
 			std::cout << "gen bitfieldpayload 3.2\n";
 			counter++;
