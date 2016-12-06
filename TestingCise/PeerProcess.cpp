@@ -153,6 +153,7 @@ void parsePeerData(std::string line)
 		}
 	}
 	Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4), allPeers);
+	std::cout << "num peers: " << allPeers.size();
 	allPeers.push_back(p);
 }
 void initializePeers()
