@@ -397,9 +397,9 @@ void error(const char *msg)
 void Peer::AwaitMessage(int sockfd)
 {
 	int n = 0;
-	char * message;
+	char message[256];
 	//waits for a return handshake message
-	bzero(message, 256);
+	bzero(message, 255);
 	n = read(sockfd, message, 256);
 	std::vector<OURBYTE> messageStream = lib->GetByteStreamFromString(message);
 	int type = lib->GetMessageTypeFromStream(messageStream);
@@ -516,7 +516,8 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 
 	int n = 0;
 	HandshakeMessage * h = new HandshakeMessage(peerID); //creates a handshake message using this peerID
-	char * message = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
+	char message[255];
+	message = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
 	n = write(sockfd, message, strlen(message)); //sends the handshake message
 	if (n < 0)
 		error("ERROR writing to socket - SendHandshakeMessageFromClient");
@@ -525,7 +526,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 		std::cout << "client sent handshake message\n";
 	}
 	//waits for a return handshake message
-	bzero(message, 256);
+	bzero(message, 255);
 	n = read(sockfd, message, 256);
 
 	if (n < 0)
@@ -583,8 +584,8 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	std::cout << "Server waiting for client bitfield message\n";
 	int n = 0;
 
-	char * message;
-	bzero(message, 256);
+	char message[255];
+	bzero(message, 255);
 	n = read(sockfd, message, 256);
 	if (n < 0)
 		error("ERROR writing to socket");
@@ -595,7 +596,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	std::cout << "Server waiting for client bitfield message 3\n";
 	SendClientBitfieldMessage(sockfd);
 	//waits for clients interested or not interested message, saves it for after sending back own message
-	bzero(message, 256);
+	bzero(message, 255);
 	n = read(sockfd, message, 256);
 	AwaitMessage(sockfd); //handles the received interested or not interested message
 	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
@@ -638,7 +639,7 @@ void Peer::startServerLinux()
 		errorS("ERROR on accept");
 
 	//receive message
-	bzero(buffer, 256);
+	bzero(buffer, 255);
 	n = read(newsockfd, buffer, 256);
 	//after connection, do the following
 	receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), newsockfd); //await a handshake message
@@ -646,7 +647,10 @@ void Peer::startServerLinux()
 	WaitForClientBitfieldMessage(newsockfd); //waits for the client to send a bitfield message and then sends one back
 	AwaitMessage(newsockfd); //this call will receive the interested or not interested method
 
+	while (true)
+	{
 
+	}
 
 
 	//if (n < 0) errorS("ERROR reading from socket");
@@ -700,10 +704,10 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 
 	//send bitfield message
 	SendServerBitfieldMessage(sockfd); //sends the server a bitfield message
-	
+
 	//then waits to receive one
-	char * message;
-	bzero(message, 256);
+	char message;
+	bzero(message, 255);
 	read(sockfd, message, 256);
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
 	DetermineInterested(returnMessage, sockfd); //send back interested message
@@ -713,13 +717,13 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	}
 
 	//printf("Please enter the message: ");
-	//bzero(buffer, 256);
+	//bzero(buffer, 255);
 	//fgets(buffer, 256, stdin);
 	//n = write(sockfd, buffer, strlen(buffer));
 	//if (n < 0)
 	//	error("ERROR writing to socket");
 
-	//bzero(buffer, 256);
+	//bzero(buffer, 255);
 	//n = read(sockfd, buffer, 256);
 	//if (n < 0)
 	//	error("ERROR reading from socket");
