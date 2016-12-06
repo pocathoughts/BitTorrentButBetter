@@ -222,7 +222,7 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 
 	int counter = 0;
 	for (int i = 0; i < initialNumberOfBytes; i++) {
-		OURBYTE currentByte(0);
+		OURBYTE currentByte(1);
 		for (int j = 0; j < 8; j++) {
 			//setting the value of the bits of the currentByte with
 			//the value of listOfPieces
