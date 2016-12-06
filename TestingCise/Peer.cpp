@@ -60,8 +60,14 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 	//START OF HARD CODING FOR TESTING FIRST CONNECTIONS
 	if (peerID == 1002)
 	{
-		std::cout << "hard code, still need to test multiple users\n";
-		startClientLinux("localhost", 1001);
+		std::cout << "hard code, still need to test multiple users running server and client at same time...\n";
+		for (std::vector<Peer*>::iterator i = preexistingPeers.begin(); i < preexistingPeers.end(); i++)
+		{
+			std::cout << "attempting to connect to a client\n";
+			startClientLinux((*i)->hostName, (*i)->peerID); //
+			std::cout << "afterclientConnection in loop\n";
+			//startClientWinsock((*i)->hostName, (*i)->peerID);
+		}
 		return;
 	}
 	//END OF HARD CODING FOR TESTING FIRST CONNECTIONS

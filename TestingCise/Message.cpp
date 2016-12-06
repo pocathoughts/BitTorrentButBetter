@@ -210,7 +210,6 @@ std::vector<OURBYTE> Message::GenerateHavePayload(int index) {
 std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector<bool> listOfPieces) {
 	std::cout << "gen bitfieldpayload 1\n";
 	std::vector<OURBYTE> bitfieldPayload;
-
 	//The payload is a bitfield representing the pieces that have been successfully downloaded.
 	//can be of a variable length
 
@@ -220,25 +219,24 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 	std::cout << "gen bitfieldpayload 2\n";
 	int initialNumberOfBytes = listOfPieces.size() / 8;
 	std::cout << "gen bitfieldpayload 3\n";
-	std::cout << initialNumberOfBytes << " init bytes" << std::endl;
+
 	int counter = 0;
-	OURBYTE * currentByte = new OURBYTE(0);
 	for (int i = 0; i < initialNumberOfBytes; i++) {
+		OURBYTE currentByte;
 		for (int j = 0; j < 8; j++) {
 			//setting the value of the bits of the currentByte with
 			//the value of listOfPieces
-			//std::cout << "gen bitfieldpayload 3.1\n";
-			lib->setBit(*currentByte, j, listOfPieces[counter]);
+			std::cout << "gen bitfieldpayload 3.1\n";
+			lib->setBit(currentByte, j, listOfPieces[counter]);
 
-			//std::cout << "gen bitfieldpayload 3.2\n";
+			std::cout << "gen bitfieldpayload 3.2\n";
 			counter++;
 		}
-		lib->printBitsInByte(*currentByte);
-		bitfieldPayload.push_back(*currentByte);
-		std::cout << "push back done, bytestream: ";
-		lib->printByteStream(bitfieldPayload);
+		lib->printBitsInByte(currentByte);
+		bitfieldPayload.push_back(currentByte);
+		std::cout << "push back done, bits: ";
+		lib->printBitsInByte(bitfieldPayload.back());
 	}
-	delete currentByte;
 	std::cout << "gen bitfieldpayload 5\n";
 
 	return bitfieldPayload;
