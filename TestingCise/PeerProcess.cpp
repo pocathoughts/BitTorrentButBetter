@@ -151,17 +151,18 @@ void parsePeerData(std::string line, int commandLineInputPeerID)
 			message4[count] = line.at(i);
 			count++;
 		}
-	
 
-	if (atoi(message1) == commandLineInputPeerID)
-	{
-		Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4));
-		allPeers.push_back(p);
-	}
-	else
-	{
-		Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4), allPeers);
-		allPeers.push_back(p);
+
+		if (atoi(message1) == commandLineInputPeerID)
+		{
+			Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4));
+			allPeers.push_back(p);
+		}
+		else
+		{
+			Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4), allPeers);
+			allPeers.push_back(p);
+		}
 	}
 }
 void initializePeers(int commandLineInputPeerID)
