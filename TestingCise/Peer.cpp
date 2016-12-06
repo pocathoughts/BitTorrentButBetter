@@ -403,6 +403,7 @@ void Peer::AwaitMessage(int sockfd)
 	//waits for a return handshake message
 	bzero(message, 255);
 	n = read(sockfd, message, 256);
+	std::cout << "whoa\n";
 	std::vector<OURBYTE> messageStream = lib->GetByteStreamFromString(message);
 	int type = lib->GetMessageTypeFromStream(messageStream);
 	if (type == 0)
