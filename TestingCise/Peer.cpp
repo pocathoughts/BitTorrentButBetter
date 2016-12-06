@@ -478,6 +478,7 @@ bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int soc
 	std::cout << "A seg fault right after this means the message wasn't sent properly\n";
 	lib->printByteStream(receivedMessage);
 	std::vector<OURBYTE> headerPortion(first, last); //seg fault on this line
+	std::cout << "what is ashually causing the seg fault\n";
 	char * header = lib->GetStringFromByteStream(headerPortion); //TODO NOAH GET HEADER FROM HS MESSAGE
 	std::cout << "received header: " << header << "\n";
 	if (strcmp(header, "P2PFILESHARINGPROJ") != 0)
