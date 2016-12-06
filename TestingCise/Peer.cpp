@@ -400,9 +400,12 @@ void Peer::AwaitMessage(int sockfd)
 	std::cout << "awaiting message\n";
 	int n = 0;
 	char message[256];
-	//waits for a return handshake message
+	//waits for a return message
 	bzero(message, 255);
-	n = recv(sockfd, message, 256, 0);
+	while (strlen(message) < 10) //shouldnt have to do this, it should block
+	{
+		n = recv(sockfd, message, 256, 0);
+	}
 	std::cout << "whoa\n";
 	std::vector<OURBYTE> messageStream = lib->GetByteStreamFromString(message);
 	int type = lib->GetMessageTypeFromStream(messageStream);
