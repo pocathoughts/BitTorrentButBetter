@@ -62,13 +62,7 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 	{
 		std::cout << "num peers: " << preexistingPeers.size();
 		std::cout << "hard code, still need to test multiple users running server and client at same time...\n";
-		for (std::vector<Peer*>::iterator i = preexistingPeers.begin(); i < preexistingPeers.end(); i++)
-		{
-			std::cout << "attempting to connect to a client\n";
-			startClientLinux((*i)->hostName, (*i)->peerID); //
-			std::cout << "afterclientConnection in loop\n";
-			//startClientWinsock((*i)->hostName, (*i)->peerID);
-		}
+		startClientLinux("lin114-00.cise.ufl.edu", 1001); //
 		return;
 	}
 	//END OF HARD CODING FOR TESTING FIRST CONNECTIONS
@@ -792,7 +786,7 @@ void Peer::SendInterestedMessage(int sockfd)
 	int n = 0;
 	Message * m = new Message(lib->INTERESTED, doesItHaveAnyPieces(), listOfPieces, 0);
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
-	
+
 	delete m;
 	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
