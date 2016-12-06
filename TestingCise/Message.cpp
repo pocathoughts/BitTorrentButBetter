@@ -219,7 +219,7 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 	std::cout << "gen bitfieldpayload 2\n";
 	int initialNumberOfBytes = listOfPieces.size() / 8;
 	std::cout << "gen bitfieldpayload 3\n";
-
+	std::cout << initialNumberOfBytes << " init bytes" << std::endl;
 	int counter = 0;
 	for (int i = 0; i < initialNumberOfBytes; i++) {
 		OURBYTE currentByte(1);
