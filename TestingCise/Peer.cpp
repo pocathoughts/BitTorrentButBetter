@@ -587,6 +587,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	char message[256];
 	bzero(message, 255);
 	n = read(sockfd, message, 256);
+	bzero(message, 255);
 	n = read(sockfd, message, 256);
 	n = read(sockfd, message, 256);
 	n = read(sockfd, message, 256);
@@ -618,6 +619,16 @@ void Peer::startServerLinux()
 	char buffer[256];
 	struct sockaddr_in serv_addr, cli_addr;
 	int n;
+
+	//enable blocking mode
+	// Set the socket I/O mode: In this case FIONBIO  
+	// enables or disables the blocking mode for the   
+	// socket based on the numerical value of iMode.  
+	// If iMode = 0, blocking is enabled;   
+	// If iMode != 0, non-blocking mode is enabled.
+	int iMode = 0;
+
+	ioctl(sockfd, FIONBIO, &iMode);
 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0)
@@ -675,6 +686,10 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	char buffer[256];
 
 	portno = portNum; ///define the portnumber
+
+	int iMode = 0;
+
+	ioctl(sockfd, FIONBIO, &iMode);
 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0)
