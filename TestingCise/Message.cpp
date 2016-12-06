@@ -234,8 +234,8 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 		}
 		lib->printBitsInByte(currentByte);
 		bitfieldPayload.push_back(currentByte);
-		std::cout << "push back done, bits: ";
-		lib->printBitsInByte(bitfieldPayload.back());
+		std::cout << "push back done, bytestream: ";
+		lib->printByteStream(bitfieldPayload);
 	}
 	std::cout << "gen bitfieldpayload 5\n";
 
