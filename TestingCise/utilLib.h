@@ -106,9 +106,7 @@ public:
 	}
 	char GetCharFromByte(OURBYTE b)
 	{
-		std::cout << "gcfb0";
 		unsigned long i = b.to_ulong();
-		std::cout << "gcfb1";
 		//if (i <= CHAR_MAX)
 		return static_cast<char>(i);
 		return NULL;
@@ -120,21 +118,15 @@ public:
 		char * str = new char[stream.size()]; //could be a long stream
 		int index = 0;
 		OURBYTE b;
-		std::cout << "gsfbs0";
-
 		for (std::vector<OURBYTE>::iterator i = stream.begin(); i < stream.end(); i++)
 		{
-			std::cout << "gsfbs0";
 			char c = GetCharFromByte((*i));
-			std::cout << "gsfbs1";
 			str[index] = c;
-			std::cout << "gsfbs2";
 			//sneaky catch for 0s
 			if (c == 0)
 			{
 				str[index] = '$';
 			}
-			std::cout << "gsfbs3";
 			index++;
 		}
 		str[index] = '\0';

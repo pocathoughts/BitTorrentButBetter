@@ -593,7 +593,9 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	if (n < 0)
 		error("ERROR writing to socket");
 
+	std::cout << "Server waiting for client bitfield message 2 \n";
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
+	std::cout << "Server waiting for client bitfield message 3\n";
 	DetermineInterested(returnMessage); //sends either an interested or a not interested message	
 
 	//await returned "interested" or "not interested" message (loop await general message)
