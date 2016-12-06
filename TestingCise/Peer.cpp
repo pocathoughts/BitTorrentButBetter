@@ -476,6 +476,7 @@ bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int soc
 	std::vector<OURBYTE>::const_iterator first = receivedMessage.begin();
 	std::vector<OURBYTE>::const_iterator last = receivedMessage.begin() + 18; //first 18 bytes
 	std::cout << "A seg fault right after this means the message wasn't sent properly\n";
+	lib->printByteStream(receivedMessage);
 	std::vector<OURBYTE> headerPortion(first, last); //seg fault on this line
 	char * header = lib->GetStringFromByteStream(headerPortion); //TODO NOAH GET HEADER FROM HS MESSAGE
 	std::cout << "received header: " << header << "\n";
