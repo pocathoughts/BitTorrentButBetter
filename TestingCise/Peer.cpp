@@ -516,8 +516,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 
 	int n = 0;
 	HandshakeMessage * h = new HandshakeMessage(peerID); //creates a handshake message using this peerID
-	char message[255];
-	message = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
+	char * message[256] = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
 	n = write(sockfd, message, strlen(message)); //sends the handshake message
 	if (n < 0)
 		error("ERROR writing to socket - SendHandshakeMessageFromClient");
@@ -584,7 +583,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	std::cout << "Server waiting for client bitfield message\n";
 	int n = 0;
 
-	char message[255];
+	char message[256];
 	bzero(message, 255);
 	n = read(sockfd, message, 256);
 	if (n < 0)
@@ -706,7 +705,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	SendServerBitfieldMessage(sockfd); //sends the server a bitfield message
 
 	//then waits to receive one
-	char message;
+	char message[256];
 	bzero(message, 255);
 	read(sockfd, message, 256);
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
@@ -770,13 +769,14 @@ void Peer::SendInterestedMessage(int sockfd)
 	int n = 0;
 	Message * m = new Message(lib->INTERESTED, doesItHaveAnyPieces(), listOfPieces, 0);
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	
 	delete m;
 	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
 		error("ERROR writing to socket - SendInterestedMessage");
 	else
 	{
-		std::cout << "server sent bitfield message to client\n";
+		std::cout << "server sent interested message to client\n";
 	}
 }
 
