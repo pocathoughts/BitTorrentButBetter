@@ -516,7 +516,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 
 	int n = 0;
 	HandshakeMessage * h = new HandshakeMessage(peerID); //creates a handshake message using this peerID
-	char * message[256] = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
+	char * message = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
 	n = write(sockfd, message, strlen(message)); //sends the handshake message
 	if (n < 0)
 		error("ERROR writing to socket - SendHandshakeMessageFromClient");
