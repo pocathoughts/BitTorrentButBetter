@@ -559,15 +559,17 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 	}
 	//analyze returned handshake message
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
-	receiveHandshakeMessage(returnMessage, sockfd);
-	return true;
+	return receiveHandshakeMessage(returnMessage, sockfd);
 }
 
 void Peer::SendServerBitfieldMessage(int sockfd)
 {
 	int n = 0;
+	std::cout << "here";
 	Message * m = new Message(lib->BITFIELD, doesItHaveAnyPieces(), listOfPieces, 0);
+	std::cout << "here1";
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	std::cout << "here2";
 	n = write(sockfd, message, strlen(message)); //sends the handshake message
 	if (n < 0)
 		error("ERROR writing to socket - SendServerBitfieldMessage");
