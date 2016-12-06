@@ -684,7 +684,7 @@ void Peer::startServerLinux()
 		//receive message
 		char * buffer;
 		bzero(buffer, 256);
-		n = read(sockfd, buffer, 255);
+		int n = read(sockfd, buffer, 255);
 		//after connection, do the following
 		receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), sockfd); //await a handshake message
 		SendHandshakeMessageFromServer(sockfd); //send the handshake message back
