@@ -728,7 +728,7 @@ void Peer::DetermineInterested(std::vector<OURBYTE> messageStream)
 	std::vector<OURBYTE>::const_iterator first = messageStream.begin() + 5;
 	std::vector<OURBYTE>::const_iterator last = messageStream.end(); //first 18 bytes
 	std::vector<OURBYTE> bitfieldPayload(first, last);
-
+	std::cout << "Determining interest 1\n";
 	int counter = 0;
 	for (std::vector<OURBYTE>::iterator i = bitfieldPayload.begin(); i < bitfieldPayload.end(); i++)
 	{
