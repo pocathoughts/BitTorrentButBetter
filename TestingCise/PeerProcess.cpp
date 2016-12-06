@@ -91,7 +91,7 @@ void checkInput()
 
 	// This code converts from string to number safely.
 }
-void parsePeerData(std::string line, int commandLineInputPeerID)
+std::vector<char*> parsePeerData(std::string line, int commandLineInputPeerID)
 {
 	char * message1 = new char[100]; //peerID
 	char * message2 = new char[100]; //hostName
@@ -155,18 +155,12 @@ void parsePeerData(std::string line, int commandLineInputPeerID)
 
 	
 	}	
-	if (atoi(message1) == commandLineInputPeerID)
-	{
-		std::cout << "init main peer\n";
-		Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4), allPeers);
-		allPeers.push_back(p);
-	}
-	else
-	{
-		std::cout << "init non main peer: " << atoi(message1) << std::endl;
-		Peer * p = new Peer(atoi(message1), message2, atoi(message3), atoi(message4));
-		allPeers.push_back(p);
-	}
+	std::vector<char*> messages;
+	messages.push_back(message1);
+	messages.push_back(message2);
+	messages.push_back(message3);
+	messages.push_back(message4);
+	return messages;
 }
 void initializePeers(int commandLineInputPeerID)
 {
@@ -179,7 +173,19 @@ void initializePeers(int commandLineInputPeerID)
 		while (loadedFile.good())
 		{
 			std::getline(loadedFile, line);
-			parsePeerData(line, commandLineInputPeerID);
+			std::vector<char*> m = parsePeerData(line, commandLineInputPeerID);
+			if (atoi(m[0]) == commandLineInputPeerID)
+			{
+				std::cout << "init main peer\n";
+				Peer * p = new Peer(atoi(m[0]), m[1], atoi(m[2]), atoi(m[3]), allPeers);
+				allPeers.push_back(p);
+			}
+			else
+			{
+				std::cout << "init non main peer: " << atoi(m[0]) << std::endl;
+				Peer * p = new Peer(atoi(m[0]), m[1], atoi(m[2]), atoi(m[3]));
+				allPeers.push_back(p);
+			}
 		}
 	}
 	else
