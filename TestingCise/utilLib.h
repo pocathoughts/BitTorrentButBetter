@@ -174,7 +174,9 @@ public:
 		int index = 0;
 		for (std::vector<OURBYTE>::iterator i = byteStream.begin(); i < byteStream.end(); i++)
 		{
-			std::cout << ("Bits in byte %d:", index);
+			std::cout << "Bits in byte ";
+			std::cout << index;
+			std::cout << " ";
 			std::cout << (*i);
 			std::cout << ("\n");
 			index++;
