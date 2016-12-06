@@ -225,6 +225,7 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 		lib->printBitsInByte(emptyByte);
         //by all we are saying the same thing of just setting 4 bytes to zero
 		for (int i = 5; i < 32; i++) {
+			std::cout << i;
 			bitfieldPayload.push_back(emptyByte);
 		}
 		std::cout << "gen bitfieldpayload 4-2\n";
