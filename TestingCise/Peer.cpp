@@ -56,11 +56,11 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 }
 void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 {
-	std::cout << "hard code, still need to test multiple users\n";
 
 	//START OF HARD CODING FOR TESTING FIRST CONNECTIONS
 	if (peerID == 1002)
 	{
+		std::cout << "hard code, still need to test multiple users\n";
 		startClientLinux("localhost", 1001);
 		return;
 	}
@@ -554,8 +554,8 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 		//std::cout << message << "\n";
 	}
 	//analyze returned handshake message
-	//std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
-	// receiveHandshakeMessage(returnMessage, sockfd);
+	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
+	receiveHandshakeMessage(returnMessage, sockfd);
 	return true;
 }
 
