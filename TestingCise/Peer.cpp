@@ -689,8 +689,11 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	//send the handshake message to the server
 	if (!SendHandshakeMessageFromClient(sockfd))
 	{
+		std::cout << "falsity\n";
 		return;
 	}
+	std::cout << "truth\n";
+
 	//send bitfield message
 	SendServerBitfieldMessage(sockfd); //sends the server a bitfield message, then waits to receive one
 	AwaitMessageAndLoop(sockfd); //loops forever basically
