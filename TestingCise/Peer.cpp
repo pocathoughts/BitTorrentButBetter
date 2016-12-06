@@ -587,13 +587,14 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 
 	char message[256];
 	bzero(message, 255);
-	n = read(sockfd, message, 256);
+	n = recv(sockfd, message, 256, 0);
 	bzero(message, 255);
-	n = read(sockfd, message, 256);
-	n = read(sockfd, message, 256);
-	n = read(sockfd, message, 256);
-	n = read(sockfd, message, 256);
-	n = read(sockfd, message, 256);
+	n = recv(sockfd, message, 256, 0);
+	n = recv(sockfd, message, 256, 0);
+	n = recv(sockfd, message, 256, 0);
+	n = recv(sockfd, message, 256, 0);
+	n = recv(sockfd, message, 256, 0);
+
 	if (n < 0)
 		error("ERROR reading socket");
 
