@@ -30,23 +30,23 @@ bool Message::hasPayload(int messageType) {
 //helper function
 //takes integer and makes bit representation of number
 std::vector<int> convert(int x) {
-    std::vector<int> ret;
-    while(x) {
-        if (x&1)
-            ret.push_back(1);
-        else
-            ret.push_back(0);
-        x>>=1;
-    }
-    int size = ret.size();
-    if (size < 32){
-        int counter = 32 - size;
-        for(int i = 0; i < counter; i++){
-            ret.push_back(0);
-        }
-    }
-    std::reverse(ret.begin(),ret.end());
-    return ret;
+	std::vector<int> ret;
+	while (x) {
+		if (x & 1)
+			ret.push_back(1);
+		else
+			ret.push_back(0);
+		x >>= 1;
+	}
+	int size = ret.size();
+	if (size < 32) {
+		int counter = 32 - size;
+		for (int i = 0; i < counter; i++) {
+			ret.push_back(0);
+		}
+	}
+	std::reverse(ret.begin(), ret.end());
+	return ret;
 }
 
 
@@ -129,7 +129,7 @@ std::vector<OURBYTE> Message::GeneratePayload(int type, bool hasPiece, std::vect
 	std::vector<OURBYTE> payload;
 	//rewrite this function to return the payload, this is for compilation
 	//std::vector<OURBYTE> NEEDSTOBEIMPLEMENTED(0);
-	if (type == 0 || type == 1 || type == 2 || type == 3) { 
+	if (type == 0 || type == 1 || type == 2 || type == 3) {
 		//choke, unchoke, interested, or not interested message respectively
 		payload = GenerateEmptyPayload();
 		return payload;
@@ -157,7 +157,7 @@ std::vector<OURBYTE> Message::GeneratePayload(int type, bool hasPiece, std::vect
 	}
 	else {
 		//invalid type returns and empty vector
-		return payload; 
+		return payload;
 	}
 }
 
@@ -165,8 +165,8 @@ std::vector<OURBYTE> Message::GeneratePayload(int type, bool hasPiece, std::vect
 //in the case of type 0, 1, 2, or 3
 std::vector<OURBYTE> Message::GenerateEmptyPayload() {
 	//assuming this part of the message is still 32 bits
-    //the payload is nothing but zeros
-    std::vector<OURBYTE> emptyPayload;
+	//the payload is nothing but zeros
+	std::vector<OURBYTE> emptyPayload;
 
 	for (int i = 5; i < 9; i++) {
 		emptyPayload.push_back(0);
@@ -180,25 +180,25 @@ std::vector<OURBYTE> Message::GenerateEmptyPayload() {
 //one for each piece it has.
 //each have message is just for one single piece
 std::vector<OURBYTE> Message::GenerateHavePayload(int index) {
-    //4 byte piece index field repesenting an index of
-    //a piece that the client has
-    //turn the integer into a byte representation and then
-    //use that as your payload
-    
-    //the assumption is that if our index is 6, its bit rep is
-    //00000000 00000000 00000000 00000110
-    //so the first byte would be 00000000
-    //second is 00000000
-    //third is 00000000
-    //fourth is 00000110
-    
-    OURBYTE indexByte;
-    std::vector<OURBYTE> havePayload;
-    std::vector<int> bitRepresentation;
-    bitRepresentation = convert(index);
-    havePayload = lib->convertBitsToBytes(bitRepresentation);
-    
-    return havePayload;
+	//4 byte piece index field repesenting an index of
+	//a piece that the client has
+	//turn the integer into a byte representation and then
+	//use that as your payload
+
+	//the assumption is that if our index is 6, its bit rep is
+	//00000000 00000000 00000000 00000110
+	//so the first byte would be 00000000
+	//second is 00000000
+	//third is 00000000
+	//fourth is 00000110
+
+	OURBYTE indexByte;
+	std::vector<OURBYTE> havePayload;
+	std::vector<int> bitRepresentation;
+	bitRepresentation = convert(index);
+	havePayload = lib->convertBitsToBytes(bitRepresentation);
+
+	return havePayload;
 }
 
 
@@ -211,44 +211,25 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 	std::cout << "gen bitfieldpayload 1\n";
 	std::vector<OURBYTE> bitfieldPayload;
 	//The payload is a bitfield representing the pieces that have been successfully downloaded.
-    //can be of a variable length
+	//can be of a variable length
 
-    //first need to check if their is even a piece with a client
-	if (!hasPiece) {
-        //first check if peer has a piece, if not, all the bits become zero
-		std::cout << "gen bitfieldpayload 2-2\n";
-		OURBYTE emptyByte;
-		lib->setAllBitsTo1(emptyByte);
-		emptyByte.flip();
-		std::cout << "gen bitfieldpayload 3-2\n";
 
-		lib->printBitsInByte(emptyByte);
-        //by all we are saying the same thing of just setting 4 bytes to zero
-		for (int i = 5; i < 32; i++) {
-			std::cout << i;
-			bitfieldPayload.push_back(emptyByte);
-		}
-		std::cout << "gen bitfieldpayload 4-2\n";
-
-	}
-	else {
 		//each bit represents if it has a piece, not each byte
 		//so the bitfieldPayload will be bitfield.size() / 8
-		std::cout << "gen bitfieldpayload 2\n";
-		int initialNumberOfBytes = listOfPieces.size() / 8;
-		std::cout << "gen bitfieldpayload 3\n";
+	std::cout << "gen bitfieldpayload 2\n";
+	int initialNumberOfBytes = listOfPieces.size() / 8;
+	std::cout << "gen bitfieldpayload 3\n";
 
-		int counter = 0;
-		for (int i = 0; i < initialNumberOfBytes; i++) {
-			OURBYTE currentByte;
-			for (int j = 0; j < 8; j++) {
-				//setting the value of the bits of the currentByte with
-				//the value of listOfPieces
-				lib->setBit(currentByte, j, listOfPieces[counter]);
-				counter++;
-			}
-			bitfieldPayload.push_back(currentByte);
+	int counter = 0;
+	for (int i = 0; i < initialNumberOfBytes; i++) {
+		OURBYTE currentByte;
+		for (int j = 0; j < 8; j++) {
+			//setting the value of the bits of the currentByte with
+			//the value of listOfPieces
+			lib->setBit(currentByte, j, listOfPieces[counter]);
+			counter++;
 		}
+		bitfieldPayload.push_back(currentByte);
 	}
 	std::cout << "gen bitfieldpayload 5\n";
 
@@ -261,12 +242,12 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 //Unchoke message, you can start requesting pieces!
 std::vector<OURBYTE> Message::GenerateRequestPayload(int requestedIndex) {
 	//4 byte piece index
-    //4 byte block offset
-    //4 byte block length
-    
-    // this will be the index of the piece we are requesting
+	//4 byte block offset
+	//4 byte block length
+
+	// this will be the index of the piece we are requesting
 	std::vector<OURBYTE> requestPayload;
-	for (int i = 5; i<9; i++) {
+	for (int i = 5; i < 9; i++) {
 		//fullActualMessage[i] = indexPieces >> (24-((i-5)*8));
 	}
 	return requestPayload;
@@ -275,26 +256,26 @@ std::vector<OURBYTE> Message::GenerateRequestPayload(int requestedIndex) {
 //in the case of type 7
 //A peer should respond to a Request message with a ‘Piece’ message that includes the block requested.
 std::vector<OURBYTE> Message::GeneratePiecePayload(/*variable indexPieces, variable content*/ OURBYTE pieceData) {
-    //4 byte piece index
-    //4 byte block offset//4 byte piece index field and contents
+	//4 byte piece index
+	//4 byte block offset//4 byte piece index field and contents
 	//piece: <len=0009+X><id=7><index><begin><block>
 	//The piece message is variable length, where X is the length of the block.The payload contains the following information :
 //index: integer specifying the zero - based piece index
 	//begin : integer specifying the zero - based byte offset within the piece
 	//block : block of data, which is a subset of the piece specified by index.
 	std::vector<OURBYTE> piecePayload;
-    
-    // fill the 4 byte piece index field
-	for (int i = 5; i<9; i++) {
+
+	// fill the 4 byte piece index field
+	for (int i = 5; i < 9; i++) {
 		//fullActualMessage[i] = indexPieces >> (24-((i-5)*8));
 	}
-    
-    
-	
-    //adding in the last byte of the payload
-    //which should be the actual data in the piece
-    piecePayload.push_back(pieceData);
-    
+
+
+
+	//adding in the last byte of the payload
+	//which should be the actual data in the piece
+	piecePayload.push_back(pieceData);
+
 	return piecePayload;
 }
 
