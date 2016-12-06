@@ -216,17 +216,20 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
     //first need to check if their is even a piece with a client
 	if (!hasPiece) {
         //first check if peer has a piece, if not, all the bits become zero
+		OURBYTE emptyByte;
+		lib->setAllBitsTo1(emptyByte);
+		emptyByte.flip();
         //by all we are saying the same thing of just setting 4 bytes to zero
-		for (int i = 5; i < 9; i++) {
-			bitfieldPayload.push_back(0);
+		for (int i = 5; i < 32; i++) {
+			bitfieldPayload.push_back(emptyByte);
 		}
 	}
 	else {
 		//each bit represents if it has a piece, not each byte
 		//so the bitfieldPayload will be bitfield.size() / 8
-		std::cout << "gen payload 2\n";
+		std::cout << "gen bitfieldpayload 2\n";
 		int initialNumberOfBytes = listOfPieces.size() / 8;
-		std::cout << "gen payload 3\n";
+		std::cout << "gen bitfieldpayload 3\n";
 
 		int counter = 0;
 		for (int i = 0; i < initialNumberOfBytes; i++) {
@@ -240,7 +243,7 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 			bitfieldPayload.push_back(currentByte);
 		}
 	}
-	std::cout << "gen payload 5\n";
+	std::cout << "gen bitfieldpayload 5\n";
 
 	return bitfieldPayload;
 }
