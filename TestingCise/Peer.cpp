@@ -622,7 +622,6 @@ void Peer::startServerLinux()
 	int n;
 
 	//enable blocking mode
-	fcntl(sockfd, F_SETFL, O_BLOCK);
 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0)
@@ -650,7 +649,7 @@ void Peer::startServerLinux()
 
 	//receive message
 	bzero(buffer, 255);
-	n = read(newsockfd, buffer, 256);
+	n = recv(newsockfd, buffer, 256, 0);
 	//after connection, do the following
 	receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), newsockfd); //await a handshake message
 	SendHandshakeMessageFromServer(newsockfd); //send the handshake message back
@@ -681,8 +680,6 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 
 	portno = portNum; ///define the portnumber
 
-	//enable blocking mode
-	fcntl(sockfd, F_SETFL, O_BLOCK);
 
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0)
@@ -718,7 +715,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	//then waits to receive one
 	char message[256];
 	bzero(message, 255);
-	read(sockfd, message, 256);
+	recv(sockfd, message, 256, 0);
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
 	DetermineInterested(returnMessage, sockfd); //send back interested message
 	while (true)
