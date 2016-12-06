@@ -588,8 +588,12 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	bzero(message, 255);
 	n = read(sockfd, message, 256);
 	n = read(sockfd, message, 256);
+	n = read(sockfd, message, 256);
+	n = read(sockfd, message, 256);
+	n = read(sockfd, message, 256);
+	n = read(sockfd, message, 256);
 	if (n < 0)
-		error("ERROR writing to socket");
+		error("ERROR reading socket");
 
 	std::cout << "Server waiting for client bitfield message 2 \n";
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
