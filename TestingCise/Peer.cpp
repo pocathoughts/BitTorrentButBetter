@@ -595,6 +595,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 
 	std::cout << "Server waiting for client bitfield message 2 \n";
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
+	lib->printByteStream(returnMessage);
 	std::cout << "Server waiting for client bitfield message 3\n";
 	DetermineInterested(returnMessage); //sends either an interested or a not interested message	
 
@@ -727,6 +728,7 @@ void Peer::DetermineInterested(std::vector<OURBYTE> messageStream)
 	//we're dealing with a bitfield message, we need to access the payload, which is from bytes 5 to the end()
 	std::vector<OURBYTE>::const_iterator first = messageStream.begin() + 5;
 	std::vector<OURBYTE>::const_iterator last = messageStream.end(); //first 18 bytes
+	std::cout << "Determining interest 0\n";
 	std::vector<OURBYTE> bitfieldPayload(first, last);
 	std::cout << "Determining interest 1\n";
 	int counter = 0;
