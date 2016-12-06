@@ -12,6 +12,8 @@ public:
 
 	Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std::vector<Peer*> preexistingPeers);
 
+	Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete);
+
 	void InitializeTCPConnections(std::vector<Peer*> preexistingPeers);
 
 	int * GetAndSetListOfNeighbors();
