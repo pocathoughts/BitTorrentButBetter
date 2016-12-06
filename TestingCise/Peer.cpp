@@ -46,7 +46,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 
 
 
-	
+
 
 
 	CreateBitfield();
@@ -596,6 +596,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 
 void Peer::startServerLinux()
 {
+	/*
 	std::cout << "begin start server\n";
 	int sockfd, newsockfd, portno;
 	socklen_t clilen;
@@ -646,15 +647,76 @@ void Peer::startServerLinux()
 	close(newsockfd);
 	close(sockfd);
 	return;
+	*/
+
+	// code for a server waiting for connections
+	// namely a stream socket on port 3490, on this host's IP
+	// either IPv4 or IPv6.
+
+	int sockfd;
+	struct addrinfo hints, *servinfo, *p;
+	int rv;
+
+	memset(&hints, 0, sizeof hints);
+	hints.ai_family = AF_UNSPEC; // use AF_INET6 to force IPv6
+	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_flags = AI_PASSIVE; // use my IP address
+
+	if ((rv = getaddrinfo(hostName, "6008", &hints, &servinfo)) != 0) {
+		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+		exit(1);
+	}
+
+	// loop through all the results and bind to the first we can
+	for (p = servinfo; p != NULL; p = p->ai_next) {
+		if ((sockfd = socket(p->ai_family, p->ai_socktype,
+			p->ai_protocol)) == -1) {
+			perror("socket");
+			continue;
+		}
+
+		if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+			close(sockfd);
+			perror("bind");
+			continue;
+		}
+
+		//receive message
+		char * buffer;
+		bzero(buffer, 256);
+		n = read(sockfd, buffer, 255);
+		//after connection, do the following
+		receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), sockfd); //await a handshake message
+		SendHandshakeMessageFromServer(sockfd); //send the handshake message back
+		WaitForClientBitfieldMessage(sockfd); //waits for the client to send a bitfield message and then sends one back
+		AwaitMessageAndLoop(sockfd); //loops forever basically
+	}
+
+	if (p == NULL) {
+		// looped off the end of the list with no successful bind
+		fprintf(stderr, "failed to bind socket\n");
+		exit(2);
+	}
+
+	freeaddrinfo(servinfo); // all done with this structure
 }
 
 
 void Peer::startClientLinux(char * hostName, int otherPeerID)
 {
+
 	std::cout << "beginning start client\n";
+
+	/*
 	int sockfd, portno, n;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
+
+	//added bc uf putty client is lame and actively tries to make my life harder for no purpose other than the fact that it sucks
+	struct addrinfo hints, *servinfo, *p;
+	memset(&hints, 0, sizeof hints);
+	hints.ai_family = AF_UNSPEC; // use AF_INET6 to force IPv6
+	hints.ai_socktype = SOCK_STREAM;
 
 	char buffer[256];
 
@@ -664,7 +726,9 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	if (sockfd < 0)
 		error("ERROR opening socket");
 
-	server = getaddrinfo(hostName);
+	struct addrinfo *ai;
+	server = getaddrinfo(hostName, , ai); //ugh uf why
+
 	if (server == NULL) {
 		fprintf(stderr, "ERROR, no such host\n");
 		exit(0);
@@ -702,9 +766,60 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	//	error("ERROR reading from socket");
 	//printf("%s\n", buffer);
 
-
+	freeaddrinfo(ai);
 	close(sockfd);
 	return;
+	*/
+	// code for a client connecting to a server
+	// namely a stream socket to www.example.com on port 80 (http)
+	// either IPv4 or IPv6
+
+	int sockfd;
+	struct addrinfo hints, *servinfo, *p;
+	int rv;
+
+	memset(&hints, 0, sizeof hints);
+	hints.ai_family = AF_UNSPEC; // use AF_INET6 to force IPv6
+	hints.ai_socktype = SOCK_STREAM;
+
+	if ((rv = getaddrinfo(hostName, "6008", &hints, &servinfo)) != 0) {
+		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+		exit(1);
+	}
+
+	// loop through all the results and connect to the first we can
+	for (p = servinfo; p != NULL; p = p->ai_next) {
+		if ((sockfd = socket(p->ai_family, p->ai_socktype,
+			p->ai_protocol)) == -1) {
+			perror("socket");
+			continue;
+		}
+
+		if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+			perror("connect");
+			close(sockfd);
+			continue;
+		}
+
+		// if we get here, we must have connected successfullystd::cout << "about to send handshake message from client\n";
+
+		//send the handshake message to the server
+		if (!SendHandshakeMessageFromClient(sockfd))
+		{
+			return;
+		}
+		//send bitfield message
+		SendServerBitfieldMessage(sockfd); //sends the server a bitfield message, then waits to receive one
+		AwaitMessageAndLoop(sockfd); //loops forever basically
+	}
+
+	if (p == NULL) {
+		// looped off the end of the list with no connection
+		fprintf(stderr, "failed to connect\n");
+		exit(2);
+	}
+
+	freeaddrinfo(servinfo); // all done with this structure
 }
 //*/
 
