@@ -9,6 +9,8 @@
 
 #include <stdio.h>
 #include <cstring>
+#include <iostream>
+#include <cstdlib>
 //#include <tchar.h>
 
 
