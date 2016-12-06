@@ -46,7 +46,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 
 
 
-	
+
 
 
 	CreateBitfield();
@@ -344,28 +344,6 @@ bool Peer::doesItHaveAnyPieces()
 	return false;
 }
 
-void Peer::SendActualMessage(int type)
-{
-	// TODO
-	// find a way to actually send it, need ouptut stream
-}
-
-void Peer::EstablishConnection(Peer * otherPeer)
-{
-	// code to connect to other peer's socket
-}
-
-
-void Peer::ReceiveMessage(std::vector<OURBYTE> receivedMessage)
-{
-	//just use receiveActualMessage
-}
-
-
-void Peer::ReceiveActualMessage(std::vector<OURBYTE> receivedMessage)
-{
-
-}
 
 void Peer::DeterminePreferredNeighbors()
 {
@@ -416,7 +394,7 @@ void error(const char *msg)
 }
 
 //main decision loop for messafe reception
-void Peer::AwaitMessageAndLoop(int sockfd)
+void Peer::AwaitMessage(int sockfd)
 {
 	int n = 0;
 	char * message;
@@ -479,7 +457,7 @@ bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int soc
 	lib->printByteStream(receivedMessage);
 	std::vector<OURBYTE> headerPortion(first, last); //seg fault on this line
 	std::cout << "what is ashually causing the seg fault\n";
-	
+
 	char * header = lib->GetStringFromByteStream(receivedMessage); //TODO NOAH GET HEADER FROM HS MESSAGE
 	header[18] = '\0';
 	std::cout << "received header: " << header << "\n";
@@ -561,7 +539,23 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
 	return receiveHandshakeMessage(returnMessage, sockfd);
 }
-
+void Peer::SendClientBitfieldMessage(int sockfd)
+{
+	int n = 0;
+	std::cout << "here";
+	Message * m = new Message(lib->BITFIELD, doesItHaveAnyPieces(), listOfPieces, 0);
+	std::cout << "here1";
+	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	std::cout << "here2";
+	n = write(sockfd, message, strlen(message)); //sends the bitfield message
+	if (n < 0)
+		error("ERROR writing to socket - SendClientBitfieldMessage");
+	else
+	{
+		std::cout << "server sent bitfield message to client\n";
+	}
+	//await returned interested or not interested message
+}
 void Peer::SendServerBitfieldMessage(int sockfd)
 {
 	int n = 0;
@@ -570,12 +564,12 @@ void Peer::SendServerBitfieldMessage(int sockfd)
 	std::cout << "here1";
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
 	std::cout << "here2";
-	n = write(sockfd, message, strlen(message)); //sends the handshake message
+	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
 		error("ERROR writing to socket - SendServerBitfieldMessage");
 	else
 	{
-		std::cout << "client sent bitfield message\n";
+		std::cout << "client sent bitfield message to server\n";
 	}
 
 	//await returned "interested" or "not interested" message (loop await general message)
@@ -595,9 +589,14 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 
 	std::cout << "Server waiting for client bitfield message 2 \n";
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
-	lib->printByteStream(returnMessage);
+	//lib->printByteStream(returnMessage);
 	std::cout << "Server waiting for client bitfield message 3\n";
-	DetermineInterested(returnMessage); //sends either an interested or a not interested message	
+	SendClientBitfieldMessage(sockfd);
+	//waits for clients interested or not interested message, saves it for after sending back own message
+	bzero(message, 256);
+	n = read(sockfd, message, 256);
+	AwaitMessage(sockfd); //handles the received interested or not interested message
+	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
 
 	//await returned "interested" or "not interested" message (loop await general message)
 	//called in startServer()
@@ -643,7 +642,7 @@ void Peer::startServerLinux()
 	receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), newsockfd); //await a handshake message
 	SendHandshakeMessageFromServer(newsockfd); //send the handshake message back
 	WaitForClientBitfieldMessage(newsockfd); //waits for the client to send a bitfield message and then sends one back
-	AwaitMessageAndLoop(newsockfd); //loops forever basically
+	AwaitMessage(newsockfd); //this call will receive the interested or not interested method
 
 
 
@@ -698,8 +697,18 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	std::cout << "truth\n";
 
 	//send bitfield message
-	SendServerBitfieldMessage(sockfd); //sends the server a bitfield message, then waits to receive one
-	AwaitMessageAndLoop(sockfd); //loops forever basically
+	SendServerBitfieldMessage(sockfd); //sends the server a bitfield message
+	
+	//then waits to receive one
+	char * message;
+	bzero(message, 256);
+	read(sockfd, message, 256);
+	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
+	DetermineInterested(returnMessage, sockfd); //send back interested message
+	while (true)
+	{
+		AwaitMessage(sockfd); //loops forever basically
+	}
 
 	//printf("Please enter the message: ");
 	//bzero(buffer, 256);
@@ -723,7 +732,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 //each of the below must send back a message through the connected stream
 
 //only one that is not called in AwaitMessageAndLoop()
-void Peer::DetermineInterested(std::vector<OURBYTE> messageStream)
+void Peer::DetermineInterested(std::vector<OURBYTE> messageStream, int sockfd)
 {
 	//we're dealing with a bitfield message, we need to access the payload, which is from bytes 5 to the end()
 	int counter = 0;
@@ -739,7 +748,7 @@ void Peer::DetermineInterested(std::vector<OURBYTE> messageStream)
 				{
 					//we are interested, there is a piece we don't have
 					std::cout << "interested\n";
-					//SendInterestedMessage(sockfd);
+					SendInterestedMessage(sockfd);
 					return;
 				}
 			}
@@ -747,10 +756,36 @@ void Peer::DetermineInterested(std::vector<OURBYTE> messageStream)
 		}
 	}
 	std::cout << "not interested\n";
-	//SendNotInterestedMessage(sockfd);
+	SendNotInterestedMessage(sockfd);
 }
 
+void Peer::SendInterestedMessage(int sockfd)
+{
+	int n = 0;
+	Message * m = new Message(lib->INTERESTED, doesItHaveAnyPieces(), listOfPieces, 0);
+	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	n = write(sockfd, message, strlen(message)); //sends the bitfield message
+	if (n < 0)
+		error("ERROR writing to socket - SendInterestedMessage");
+	else
+	{
+		std::cout << "server sent bitfield message to client\n";
+	}
+}
 
+void Peer::SendNotInterestedMessage(int sockfd)
+{
+	int n = 0;
+	Message * m = new Message(lib->NOTINTERESTED, doesItHaveAnyPieces(), listOfPieces, 0);
+	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	n = write(sockfd, message, strlen(message)); //sends the bitfield message
+	if (n < 0)
+		error("ERROR writing to socket - SendNotInterestedMessage");
+	else
+	{
+		std::cout << "server sent bitfield message to client\n";
+	}
+}
 void Peer::receiveUnchokeMessage(std::vector<OURBYTE> messageStream)
 {
 }

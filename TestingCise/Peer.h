@@ -27,7 +27,7 @@ public:
 	void SendActualMessage(int type);
 	void EstablishConnection(Peer * otherPeer);
 	void ReceiveMessage(std::vector<OURBYTE> receivedMessage);
-	void AwaitMessageAndLoop(int sockfd);
+	void AwaitMessage(int sockfd);
 	bool receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int sockfd);
 	void ClientReceiveReturnHandshakeMessage(std::vector<OURBYTE> receivedMessage, int expectedPeerID);
 	void ReceiveActualMessage(std::vector<OURBYTE> receivedMessage);
@@ -38,6 +38,7 @@ public:
 	~Peer();
 	void SendHandshakeMessageFromServer(int sockfd);
 	bool SendHandshakeMessageFromClient(int sockfd);
+	void SendClientBitfieldMessage(int sockfd);
 	void SendServerBitfieldMessage(int sockfd);
 private:
 	utilLib * lib;
@@ -97,7 +98,7 @@ private:
 
 
 	//message handling
-	void DetermineInterested(std::vector<OURBYTE> messageStream);
+	void DetermineInterested(std::vector<OURBYTE> messageStream, int sockfd);
 	void receiveUnchokeMessage(std::vector<OURBYTE> messageStream);
 	void receiveChokeMessage(std::vector<OURBYTE> messageStream);
 	void receiveInterestedMessage(std::vector<OURBYTE> messageStream);
