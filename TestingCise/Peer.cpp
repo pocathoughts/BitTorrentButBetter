@@ -546,6 +546,7 @@ void Peer::SendClientBitfieldMessage(int sockfd)
 	Message * m = new Message(lib->BITFIELD, doesItHaveAnyPieces(), listOfPieces, 0);
 	std::cout << "here1";
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	delete m;
 	std::cout << "here2";
 	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
@@ -563,6 +564,7 @@ void Peer::SendServerBitfieldMessage(int sockfd)
 	Message * m = new Message(lib->BITFIELD, doesItHaveAnyPieces(), listOfPieces, 0);
 	std::cout << "here1";
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	delete m;
 	std::cout << "here2";
 	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
@@ -764,6 +766,7 @@ void Peer::SendInterestedMessage(int sockfd)
 	int n = 0;
 	Message * m = new Message(lib->INTERESTED, doesItHaveAnyPieces(), listOfPieces, 0);
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	delete m;
 	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
 		error("ERROR writing to socket - SendInterestedMessage");
@@ -778,6 +781,7 @@ void Peer::SendNotInterestedMessage(int sockfd)
 	int n = 0;
 	Message * m = new Message(lib->NOTINTERESTED, doesItHaveAnyPieces(), listOfPieces, 0);
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	delete m;
 	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
 		error("ERROR writing to socket - SendNotInterestedMessage");
