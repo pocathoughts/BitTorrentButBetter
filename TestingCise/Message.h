@@ -29,6 +29,7 @@ private:
 
 public:
 	Message(int type, bool hasPiece, std::vector<bool> listOfPieces, int requestedIndex);
+	Message();
 	std::vector<OURBYTE> GetActualMessageByteStream();
 };
 
