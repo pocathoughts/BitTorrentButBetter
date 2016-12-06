@@ -232,7 +232,7 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 			std::cout << "gen bitfieldpayload 3.2\n";
 			counter++;
 		}
-		std::cout << "gen bitfieldpayload 3.2\n";
+		lib->printBitsInByte(currentByte);
 		bitfieldPayload.push_back(currentByte);
 	}
 	std::cout << "gen bitfieldpayload 5\n";
