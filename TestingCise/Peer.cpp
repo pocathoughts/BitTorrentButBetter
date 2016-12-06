@@ -396,6 +396,7 @@ void error(const char *msg)
 //main decision loop for messafe reception
 void Peer::AwaitMessage(int sockfd)
 {
+	std::cout << "awaiting message\n";
 	int n = 0;
 	char message[256];
 	//waits for a return handshake message
@@ -646,10 +647,7 @@ void Peer::startServerLinux()
 	WaitForClientBitfieldMessage(newsockfd); //waits for the client to send a bitfield message and then sends one back
 	AwaitMessage(newsockfd); //this call will receive the interested or not interested method
 
-	while (true)
-	{
 
-	}
 
 
 	//if (n < 0) errorS("ERROR reading from socket");
@@ -791,7 +789,7 @@ void Peer::SendNotInterestedMessage(int sockfd)
 		error("ERROR writing to socket - SendNotInterestedMessage");
 	else
 	{
-		std::cout << "server sent bitfield message to client\n";
+		std::cout << "server sent not interested message to client\n";
 	}
 }
 void Peer::receiveUnchokeMessage(std::vector<OURBYTE> messageStream)
