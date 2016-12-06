@@ -664,8 +664,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	if (sockfd < 0)
 		error("ERROR opening socket");
 
-
-	server = getaddrinfo(hostName);
+	server = gethostbyname(hostName);
 	if (server == NULL) {
 		fprintf(stderr, "ERROR, no such host\n");
 		exit(0);
