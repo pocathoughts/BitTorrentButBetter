@@ -161,7 +161,7 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 	for (std::vector<Peer*>::iterator i = preexistingPeers.begin(); i < preexistingPeers.end(); i++)
 	{
 		std::cout << "attempting to connect to a client\n";
-		startClientLinux((*i)->hostName, (*i)->peerID); //
+		startClientLinux((*i)); //
 		std::cout << "afterclientConnection in loop\n";
 		//startClientWinsock((*i)->hostName, (*i)->peerID);
 	}
