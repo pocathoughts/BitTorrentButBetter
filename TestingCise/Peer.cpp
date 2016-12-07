@@ -145,7 +145,7 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 	{
 		std::cout << "num peers: " << preexistingPeers.size();
 		std::cout << "hard code, still need to test multiple users running server and client at same time...\n";
-		startClientLinux("lin114-00.cise.ufl.edu", 1001); //
+		startClientLinux(preexistingPeers()[0]); //
 		return;
 	}
 	//END OF HARD CODING FOR TESTING FIRST CONNECTIONS
@@ -781,8 +781,10 @@ void Peer::startServerLinux()
 }
 
 
-void Peer::startClientLinux(char * hostName, int otherPeerID)
+void Peer::startClientLinux(Peer * otherPeer)
 {
+	char * hostName = otherPeer->hostName;
+	int otherPeerID = otherPeer->peerID;
 	std::cout << "beginning start client\n";
 	int sockfd, portno, n;
 	struct sockaddr_in serv_addr;
@@ -812,9 +814,9 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 		error("ERROR connecting");
 
 	std::cout << "about to send handshake message from client\n";
-
+	otherPeer->establishedSockfd = sockfd;
 	//send the handshake message to the server
-	if (!SendHandshakeMessageFromClient(sockfd))
+	if (!SendHandshakeMessageFromClient(otherPeer->establishedSockfd))
 	{
 		std::cout << "falsity\n";
 		return;
@@ -823,14 +825,14 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 
 
 	//send bitfield message
-	SendServerBitfieldMessage(sockfd); //sends the server a bitfield message
-	WaitForServerBitfieldMessage(sockfd);
+	SendServerBitfieldMessage(otherPeer->establishedSockfd); //sends the server a bitfield message
+	WaitForServerBitfieldMessage(otherPeer->establishedSockfd);
 	//then waits to receive one
 	char message[256];
 	bzero(message, 255);
-	recv(sockfd, message, 256, 0);
+	recv(otherPeer->establishedSockfd, message, 256, 0);
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
-	DetermineInterested(returnMessage, sockfd); //send back interested message
+	DetermineInterested(returnMessage, otherPeer->establishedSockfd); //send back interested message
 	
 	while (true)
 	{
@@ -926,10 +928,12 @@ void Peer::receiveChokeMessage(std::vector<OURBYTE> messageStream)
 
 void Peer::receiveInterestedMessage(std::vector<OURBYTE> messageStream)
 {
+	interestedInMainPeer = true;
 }
 
 void Peer::receiveNotInterestedMessage(std::vector<OURBYTE> messageStream)
 {
+	interestedInMainPeer = false;
 }
 
 void Peer::receiveHaveMessage(std::vector<OURBYTE> messageStream)
@@ -942,4 +946,30 @@ void Peer::receiveRequestMessage(std::vector<OURBYTE> messageStream)
 
 void Peer::receivePieceMessage(std::vector<OURBYTE> messageStream)
 {
+}
+
+void Peer::UploadPieces()
+{
+	for (std::vector<Peer*>::iterator i = otherPeers.begin(); i < otherPeers.end(); i)
+	{
+		if ((*i)->isPrefferedNeighbor || (*i)->isOptomisticallyUnchokedNeighbor)
+		{
+			SendPieceMessage((*i)); //maybe not a great idea TODO decide
+		}
+	}
+}
+void Peer::SendPieceMessage(Peer * otherPeer)
+{
+	Message * m = new Message(lib->PIECE, doesItHaveAnyPieces(), listOfPieces, otherPeer->requestedPieceIndex); //todo check requested piece index
+																												//std::cout << "here1";
+	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	delete m;
+	//std::cout << "here2";
+	int n = write(otherPeer->establishedSockfd, message, strlen(message)); //sends the bitfield message
+	if (n < 0)
+		error("ERROR writing to socket - sendPieceMessage");
+	else
+	{
+		std::cout << "piece message sent, requested index: " << otherPeer->requestedPieceIndex << std::endl;
+	}
 }

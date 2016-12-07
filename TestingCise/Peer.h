@@ -23,7 +23,7 @@ public:
 	void WaitForServerBitfieldMessage(int sockfd);
 
 	void startServerLinux();
-	void startClientLinux(char * hostName, int otherPeerID);
+	void startClientLinux(Peer * otherPeer);
 
 
 	void CreateBitfield();
@@ -39,6 +39,16 @@ public:
 	bool SendHandshakeMessageFromClient(int sockfd);
 	void SendClientBitfieldMessage(int sockfd);
 	void SendServerBitfieldMessage(int sockfd);
+
+	//loop through otherPeers to get these
+	//useless for the main peer
+	//each whether or not the peer is interested in the main peer, 
+	bool interestedInMainPeer = false;
+	bool isPrefferedNeighbor = false;
+	bool isOptomisticallyUnchokedNeighbor = false;
+	int requestedPieceIndex = -1;
+	int establishedSockfd = -1; //todo implement in and set everywhere
+
 private:
 	utilLib * lib;
 
@@ -107,6 +117,10 @@ private:
 	void receiveHaveMessage(std::vector<OURBYTE> messageStream);
 	void receiveRequestMessage(std::vector<OURBYTE> messageStream);
 	void receivePieceMessage(std::vector<OURBYTE> messageStream);
+
+	void UploadPieces();
+
+	void SendPieceMessage(Peer * otherPeer);
 
 	//recent adds
 	std::string subDirAndFile;
