@@ -971,7 +971,7 @@ void Peer::startServerLinux()
 				//Echo back the message that came in
 				else
 				{
-					HandleMssage(client_socket[i], buffer);
+					HandleMessage(client_socket[i], buffer);
 					//set the string terminating NULL byte on the end of the data read
 					//buffer[valread] = '\0';
 					//send(sd, buffer, strlen(buffer), 0);
