@@ -499,7 +499,7 @@ bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int soc
 	std::vector<OURBYTE>::const_iterator first = receivedMessage.begin();
 	std::vector<OURBYTE>::const_iterator last = receivedMessage.begin() + 18; //first 18 bytes
 	std::cout << "A seg fault right after this means the message wasn't sent properly\n";
-	lib->printByteStream(receivedMessage);
+	//lib->printByteStream(receivedMessage);
 	std::vector<OURBYTE> headerPortion(first, last); //seg fault on this line
 	std::cout << "what is ashually causing the seg fault\n";
 
@@ -578,7 +578,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 	else
 	{
 		std::cout << ("client received return handshake message\n");
-		//std::cout << message << "\n";
+		std::cout << message << "\n";
 	}
 	//analyze returned handshake message
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
