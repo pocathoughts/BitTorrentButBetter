@@ -92,8 +92,9 @@ void Message::GenerateActualMessageByteStream(int type, bool hasPiece, std::vect
 	//type byte
 	for (int i = 0; i < 1; i++)
 	{
-		OURBYTE typeByte(type);
-		fullActualMessage.push_back(typeByte);
+		//OURBYTE typeByte(type);
+		//lib->GetByteStreamFromInt(type)[0]
+		fullActualMessage.push_back(lib->GetByteStreamFromInt(type)[0]);
 	}
 	//payload
 	for (int i = 0; i < payload.size(); i++)
