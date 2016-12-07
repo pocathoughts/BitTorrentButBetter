@@ -95,7 +95,7 @@ public:
 			//sneaky catch for 0s
 			if (str[i] == '$')
 			{
-				OURBYTE b;
+				OURBYTE b(0); //was b
 				word.push_back(b);
 				continue;
 			}
