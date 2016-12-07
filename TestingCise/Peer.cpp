@@ -25,8 +25,8 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	listOfPieces.reserve(numPieces);
 	//file name inits
 	std::cout << "HOLY FUCK";
-	std::ostringstream oss;
-	oss << "peer_" << peerID;
+	std::stringstream oss;
+	oss << "peer_" << peerID; //WHY DOES THIS CAUSE MALLOC MEMORY ERROR
 	//subdir = oss.str();
 	//oss << fileName;
 	//subDirAndFile = oss.str();
