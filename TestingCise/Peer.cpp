@@ -496,7 +496,7 @@ void Peer::AwaitMessage(int sockfd)
 bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int sockfd)
 {
 	std::cout << "begin receiveHandshakeMessage\n";
-	std::cout << lib->GetStringFromByteStream(receivedMessage) << "\n";
+	//std::cout << lib->GetStringFromByteStream(receivedMessage) << "\n";
 	//Check if header has “P2PFILESHARINGPROJ”
 	std::vector<OURBYTE>::iterator first = receivedMessage.begin();
 	std::vector<OURBYTE>::iterator last = receivedMessage.begin() + 18; //first 18 bytes
@@ -509,7 +509,7 @@ bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int soc
 
 	char * header = lib->GetStringFromByteStream(receivedMessage); //TODO NOAH GET HEADER FROM HS MESSAGE
 	header[18] = '\0';
-	std::cout << "received header: " << header << "\n";
+	//std::cout << "received header: " << header << "\n";
 	if (strcmp(header, "P2PFILESHARINGPROJ") != 0)
 	{
 		std::cout << "handshake header not correct, closing connection\n";
@@ -554,7 +554,7 @@ void Peer::SendHandshakeMessageFromServer(int sockfd)
 		error("ERROR writing to socket - SendHandshakeMessageFromServer");
 	else
 	{
-		std::cout << "server sent handshake message back: ";
+		std::cout << "server sent handshake message back\n";
 		//std::cout << message;
 	}
 }
@@ -581,7 +581,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 		error("ERROR writing to socket");
 	else
 	{
-		std::cout << ("client received return handshake message\n");
+		std::cout << ("client received return handshake message: ");
 		std::cout << message << "\n";
 	}
 	//analyze returned handshake message
@@ -591,12 +591,12 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 void Peer::SendClientBitfieldMessage(int sockfd)
 {
 	int n = 0;
-	std::cout << "here";
+	//std::cout << "here";
 	Message * m = new Message(lib->BITFIELD, doesItHaveAnyPieces(), listOfPieces, 0);
-	std::cout << "here1";
+	///std::cout << "here1";
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
 	delete m;
-	std::cout << "here2";
+	//std::cout << "here2";
 	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
 		error("ERROR writing to socket - SendClientBitfieldMessage");
@@ -644,10 +644,10 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	if (n < 0)
 		error("ERROR reading socket");
 
-	std::cout << "Server waiting for client bitfield message 2 \n";
+	//std::cout << "Server waiting for client bitfield message 2 \n";
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
 	//lib->printByteStream(returnMessage);
-	std::cout << "Server waiting for client bitfield message 3\n";
+	//std::cout << "Server waiting for client bitfield message 3\n";
 	SendClientBitfieldMessage(sockfd);
 	//waits for server's interested or not interested message, saves it for after sending back own message
 	//bitfield
@@ -673,7 +673,7 @@ void Peer::WaitForServerBitfieldMessage(int sockfd)
 	if (n < 0)
 		error("ERROR reading socket");
 
-	std::cout << "client waiting for Server bitfield message 2 \n";
+	//std::cout << "client waiting for Server bitfield message 2 \n";
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
 	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
 }
@@ -775,7 +775,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 		std::cout << "falsity\n";
 		return;
 	}
-	std::cout << "truth\n";
+	//std::cout << "truth\n";
 
 
 	//send bitfield message
@@ -869,7 +869,7 @@ void Peer::SendNotInterestedMessage(int sockfd)
 		error("ERROR writing to socket - SendNotInterestedMessage");
 	else
 	{
-		std::cout << "sent not interested message to client\n";
+		std::cout << "sent not interested messagE\n";
 	}
 }
 void Peer::receiveUnchokeMessage(std::vector<OURBYTE> messageStream)

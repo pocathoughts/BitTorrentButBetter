@@ -59,9 +59,10 @@ Message::Message(int type, bool hasPiece, std::vector<bool> listOfPieces, int re
 	/*messagePayload = messagePayload;
 	messageType = type;
 	messageLength = 1 + messagePayload.length;*/
-	std::cout << "message constructor\n";
+	std::cout << "message constructor type: " << type << std::endl;
+
 	lib = new utilLib();
-	std::cout << "message constructor 2\n";
+	//std::cout << "message constructor 2\n";
 	GenerateActualMessageByteStream(type, hasPiece, listOfPieces, requestedIndex);
 }
 Message::~Message()
@@ -72,15 +73,15 @@ Message::~Message()
 //most central message function
 void Message::GenerateActualMessageByteStream(int type, bool hasPiece, std::vector<bool> listOfPieces, int requestedIndex)
 {
-	std::cout << "generate bytestream\n";
+	//std::cout << "generate bytestream\n";
 	std::vector<OURBYTE> payload;
 	payload.reserve(38);
 	payload = GeneratePayload(type, hasPiece, listOfPieces, requestedIndex);
-	std::cout << "generate bytestream 2\n";
+	//std::cout << "generate bytestream 2\n";
 	std::vector<OURBYTE> messageLength;
 	messageLength.reserve(4);
 	messageLength = DetermineMessageLength();
-	std::cout << "generate bytestream 3\n";
+	//std::cout << "generate bytestream 3\n";
 	fullActualMessage.reserve(50); //max should be 38 + 4 + 1 = 43
 	//messageLength
 	for (int i = 0; i < 4; i++)
@@ -131,7 +132,7 @@ std::vector<OURBYTE> Message::DetermineMessageLength()
 //different message types mean a different type of payload
 std::vector<OURBYTE> Message::GeneratePayload(int type, bool hasPiece, std::vector<bool> listOfPieces, int requestedIndex)
 {
-	std::cout << "gen payload\n";
+	std::cout << "gen payload type: " << type << std::endl;
 	std::vector<OURBYTE> payload;
 	//rewrite this function to return the payload, this is for compilation
 	//std::vector<OURBYTE> NEEDSTOBEIMPLEMENTED(0);
@@ -214,7 +215,7 @@ std::vector<OURBYTE> Message::GenerateHavePayload(int index) {
 //each bit represents a piece that a message has
 //similar to have message but more encompassing
 std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector<bool> listOfPieces) {
-	std::cout << "gen bitfieldpayload 1\n";
+	//std::cout << "gen bitfieldpayload 1\n";
 	std::vector<OURBYTE> bitfieldPayload;
 	//The payload is a bitfield representing the pieces that have been successfully downloaded.
 	//can be of a variable length
@@ -222,9 +223,9 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 
 		//each bit represents if it has a piece, not each byte
 		//so the bitfieldPayload will be bitfield.size() / 8
-	std::cout << "gen bitfieldpayload 2\n";
+	//std::cout << "gen bitfieldpayload 2\n";
 	int initialNumberOfBytes = listOfPieces.size() / 8;
-	std::cout << "gen bitfieldpayload 3\n";
+	//std::cout << "gen bitfieldpayload 3\n";
 	bitfieldPayload.reserve(initialNumberOfBytes);
 
 	int counter = 0;
@@ -244,7 +245,7 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 		//std::cout << "push back done, bits: ";
 		//lib->printBitsInByte(bitfieldPayload.back());
 	}
-	std::cout << "gen bitfieldpayload 5\n";
+	//std::cout << "gen bitfieldpayload 5\n";
 
 	return bitfieldPayload;
 }
@@ -307,7 +308,7 @@ HandshakeMessage::HandshakeMessage(int _peerID)
 
 	peerID = lib->GetByteStreamFromInt(_peerID);
 	GenerateHandshakeMessageByteStream(handshakeHeader, peerID);
-	std::cout << "full handshake message: " << lib->GetStringFromByteStream(fullHandshakeMessage) << std::endl;
+	//std::cout << "full handshake message: " << lib->GetStringFromByteStream(fullHandshakeMessage) << std::endl;
 }
 void HandshakeMessage::GenerateHandshakeMessageByteStream(std::vector<OURBYTE> header, std::vector<OURBYTE> peerID)
 {
