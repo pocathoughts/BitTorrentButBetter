@@ -563,7 +563,9 @@ bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int soc
 	//get peerID from end of handshake message
 	first = receivedMessage.begin() + 28; //last 4 bytes
 	last = receivedMessage.end();
-	std::vector<OURBYTE> peerIDPortion(first, last);
+	std::vector<OURBYTE> peerIDPortion; 
+	peerIDPortion.reserve(4);
+	peerIDPortion = std::vector<OURBYTE>(first, last);
 
 	int receivedPeerID = lib->GetIntFromByteStream(peerIDPortion); //TODO NOAH GET PEER ID FROM HS MESSAGE
 																   //Check if peerID is in list of peerIDs
