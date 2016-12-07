@@ -36,22 +36,22 @@ void utilLib::reglog(int logtype, char * time, int peer_ID, int peer2_ID) {
 	char logname[] = "log_peer_num.log"; //TO DO NOAH, STRING MANIPULATION, LOG PER PEER ID
 	int str;
 	outfile.open(logname, std::ios_base::app);
-	switch (logtype) {
-	case 0: //connection TO another peer	
-		outfile << sprintf("%c: Peer %d makes a connection to Peer %d.\n", time, peer_ID, peer2_ID);
-	case 1: //connection FROM another peer
-		outfile << sprintf("%c: Peer %d is connected from Peer %d.\n", time, peer_ID, peer2_ID);
-	case 2: //change of optimistically unchoked neighbor
-		outfile << sprintf("%c: Peer %d has the optimistically unchoked neighbor %d.\n", time, peer_ID, peer2_ID);
-	case 3: //unchoking
-		outfile << sprintf("%c: Peer %d is unchoked by %d.\n", time, peer_ID, peer2_ID);
-	case 4: //choking
-		outfile << sprintf("%c: Peer %d is choked by %d.\n", time, peer_ID, peer2_ID);
-	case 5: //interested
-		outfile << sprintf("%c: Peer %d received the 'interested' message from %d.\n", time, peer_ID, peer2_ID);
-	case 6: //not interested	
-		outfile << sprintf("%c: Peer %d received the 'not interested' message from %d.\n", time, peer_ID, peer2_ID);
-	}
+	//switch (logtype) {
+	//case 0: //connection TO another peer	
+	//	outfile << sprintf("%c: Peer %d makes a connection to Peer %d.\n", time, peer_ID, peer2_ID);
+	//case 1: //connection FROM another peer
+	//	outfile << sprintf("%c: Peer %d is connected from Peer %d.\n", time, peer_ID, peer2_ID);
+	//case 2: //change of optimistically unchoked neighbor
+	//	outfile << sprintf("%c: Peer %d has the optimistically unchoked neighbor %d.\n", time, peer_ID, peer2_ID);
+	//case 3: //unchoking
+	//	outfile << sprintf("%c: Peer %d is unchoked by %d.\n", time, peer_ID, peer2_ID);
+	//case 4: //choking
+	//	outfile << sprintf("%c: Peer %d is choked by %d.\n", time, peer_ID, peer2_ID);
+	//case 5: //interested
+	//	outfile << sprintf("%c: Peer %d received the 'interested' message from %d.\n", time, peer_ID, peer2_ID);
+	//case 6: //not interested	
+	//	outfile << sprintf("%c: Peer %d received the 'not interested' message from %d.\n", time, peer_ID, peer2_ID);
+	//}
 }
 
 void utilLib::pnlog(char * time, int peer_ID) { //logging preferred neighbors //TO DO NOAH NEIGHBORLIST TYPE

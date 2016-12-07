@@ -115,7 +115,6 @@ public:
 		unsigned long i = b.to_ulong();
 		//if (i <= CHAR_MAX)
 		return static_cast<char>(i);
-		return NULL;
 	}
 
 	//try to avoid this it throws seg faults sometimes but not all the time dont ask me lawl
