@@ -886,12 +886,6 @@ void Peer::startServerLinux()
 		{
 			printf("select error");
 		} 
-		else
-		{
-			bzero(buffer, 255);
-			int n = recv(new_socket, buffer, 256, 0);
-			HandleMessage(activity, buffer);
-		}
 
 		//If something happened on the master socket , then its an incoming connection
 		if (FD_ISSET(master_socket, &readfds))
