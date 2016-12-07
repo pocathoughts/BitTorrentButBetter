@@ -404,9 +404,12 @@ std::vector<OURBYTE> Message::GeneratePiecePayload(int pieceIndex) {
 HandshakeMessage::HandshakeMessage(int _peerID)
 {
 	std::vector<OURBYTE> handshakeHeader; //18 bytes
+	handshakeHeader.reserve(18);
 	std::vector<OURBYTE> zeroBytes; //10 zero bytes
+	zeroBytes.reserve(10);
 	std::vector<OURBYTE> peerID; //4 bytes
-								 //�P2PFILESHARINGPROJ'
+	zeroBytes.reserve(4);
+	//�P2PFILESHARINGPROJ'
 	fullHandshakeMessage.reserve(32);
 	lib = new utilLib();
 	handshakeHeader = lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
