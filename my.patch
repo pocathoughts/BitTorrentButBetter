@@ -1,0 +1,362 @@
+diff --git a/TestingCise/Message.cpp b/TestingCise/Message.cpp
+index c43ccf0..629e2cd 100644
+--- a/TestingCise/Message.cpp
++++ b/TestingCise/Message.cpp
+@@ -160,8 +160,7 @@ std::vector<OURBYTE> Message::GeneratePayload(int type, bool hasPiece, std::vect
+ 	}
+ 	else if (type == 7) {
+ 		//piece message
+-		OURBYTE NEEDSTOBEIMPLEMENTED;
+-		payload = GeneratePiecePayload(NEEDSTOBEIMPLEMENTED);
++		payload = GeneratePiecePayload(requestedIndex);
+ 		return payload;
+ 	}
+ 	else {
+@@ -257,40 +256,143 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
+ //once you have sent your Interested message and received an
+ //Unchoke message, you can start requesting pieces!
+ std::vector<OURBYTE> Message::GenerateRequestPayload(int requestedIndex) {
+-	//4 byte piece index
++	//4 byte piece index of the piece you want!
+ 	//4 byte block offset
+ 	//4 byte block length
+ 
+-	// this will be the index of the piece we are requesting
++	//Note that if the piece_length is not evenly divisible by the block
++	//request size, the last block of each piece will be smaller than
++	//the normal block size, It is likely that at least the last block
++	//of the last piece will be smaller than the block request size
++	//(and the last piece smaller than the piece_length)
++
++	OURBYTE indexByte;
+ 	std::vector<OURBYTE> requestPayload;
+-	for (int i = 5; i < 9; i++) {
+-		//fullActualMessage[i] = indexPieces >> (24-((i-5)*8));
++	std::vector<int> bitRepresentation;
++	bitRepresentation = convert(requestedIndex);
++
++	//below the payload has the 4 byte piece index
++	requestPayload = lib->convertBitsToBytes(bitRepresentation);
++
++	/*
++	//next we need to generate the 4byte offset...
++	//but how do we determine the offset?
++	//NEEDS TO BE IMPLEMENTED, FOR NOW ALL ZEROS
++
++	OURBYTE first;
++	OURBYTE second;
++	OURBYTE third;
++	OURBYTE fourth;
++
++	for(int i = 0; i < 8; i++){
++	lib->setBit(first, i, 0);
++	lib->setBit(second, i, 0);
++	lib->setBit(third, i, 0);
++	lib->setBit(fourth, i, 0);
++	}
++
++	requestPayload.push_back(first);
++	requestPayload.push_back(second);
++	requestPayload.push_back(third);
++	requestPayload.push_back(fourth);
++
++	//now we need to give the 4 byte block length
++	//intenet reccomends 2^14 power
++	//which is 00000000 00000100 00000000 00000000
++
++	OURBYTE firstByte;
++	OURBYTE secondByte;
++	OURBYTE thirdByte;
++	OURBYTE fourthByte;
++
++	for(int i = 0; i < 8; i++){
++	lib->setBit(firstByte, i, 0);
++	lib->setBit(thirdByte, i, 0);
++	lib->setBit(fourthByte, i, 0);
++	}
++	for(int i = 0; i < 8; i++){
++	if(i == 5){
++	lib->setBit(secondByte, i, 1);
++	}
++	lib->setBit(secondByte, i, 0);
+ 	}
++
++	requestPayload.push_back(firstByte);
++	requestPayload.push_back(secondByte);
++	requestPayload.push_back(thirdByte);
++	requestPayload.push_back(fourthByte);
++	*/
++
+ 	return requestPayload;
+ }
+ 
+ //in the case of type 7
+-//A peer should respond to a Request message with a ‘Piece’ message that includes the block requested.
+-std::vector<OURBYTE> Message::GeneratePiecePayload(/*variable indexPieces, variable content*/ OURBYTE pieceData) {
++//A peer should respond to a Request message with contents of piece
++std::vector<OURBYTE> Message::GeneratePiecePayload(int pieceIndex) {
+ 	//4 byte piece index
+-	//4 byte block offset//4 byte piece index field and contents
+-	//piece: <len=0009+X><id=7><index><begin><block>
+-	//The piece message is variable length, where X is the length of the block.The payload contains the following information :
+-//index: integer specifying the zero - based piece index
+-	//begin : integer specifying the zero - based byte offset within the piece
+-	//block : block of data, which is a subset of the piece specified by index.
+-	std::vector<OURBYTE> piecePayload;
++	//4 byte block offset
++	//variable length block containing the raw bytes for the requested piece.
++	//The length of this should be the same as the length requested.
++	//which we used 2^14 power
+ 
+-	// fill the 4 byte piece index field
+-	for (int i = 5; i < 9; i++) {
+-		//fullActualMessage[i] = indexPieces >> (24-((i-5)*8));
+-	}
+ 
++	//add in the piece index
++	std::vector<OURBYTE> piecePayload;
++	std::vector<int> bitRepresentation;
++	bitRepresentation = convert(pieceIndex);
++
++	//below the payload has the 4 byte piece index
++	piecePayload = lib->convertBitsToBytes(bitRepresentation);
++
++	/*
++	//next we need to generate the 4byte offset...
++	//but how do we determine the offset?
++	//NEEDS TO BE IMPLEMENTED, FOR NOW ALL ZEROS
++
++	OURBYTE first;
++	OURBYTE second;
++	OURBYTE third;
++	OURBYTE fourth;
++
++	for(int i = 0; i < 8; i++){
++	lib->setBit(first, i, 0);
++	lib->setBit(second, i, 0);
++	lib->setBit(third, i, 0);
++	lib->setBit(fourth, i, 0);
++	}
+ 
++	piecePayload.push_back(first);
++	piecePayload.push_back(second);
++	piecePayload.push_back(third);
++	piecePayload.push_back(fourth);
++	*/
++
++	//now we need to give the 4 byte block length
++	//because it said to make it same length as what was requested
++	//intenet reccomends 2^14 power
++	//which is 00000000 00000100 00000000 00000000
++
++	OURBYTE firstByte;
++	OURBYTE secondByte;
++	OURBYTE thirdByte;
++	OURBYTE fourthByte;
++
++	for (int i = 0; i < 8; i++) {
++		lib->setBit(firstByte, i, 0);
++		lib->setBit(thirdByte, i, 0);
++		lib->setBit(fourthByte, i, 0);
++	}
++	for (int i = 0; i < 8; i++) {
++		if (i == 5) {
++			lib->setBit(secondByte, i, 1);
++		}
++		lib->setBit(secondByte, i, 0);
++	}
+ 
+-	//adding in the last byte of the payload
+-	//which should be the actual data in the piece
+-	piecePayload.push_back(pieceData);
++	piecePayload.push_back(firstByte);
++	piecePayload.push_back(secondByte);
++	piecePayload.push_back(thirdByte);
++	piecePayload.push_back(fourthByte);
+ 
+ 	return piecePayload;
+ }
+diff --git a/TestingCise/Message.h b/TestingCise/Message.h
+index 3729191..c7f9d3d 100644
+--- a/TestingCise/Message.h
++++ b/TestingCise/Message.h
+@@ -20,7 +20,7 @@ private:
+ 	std::vector<OURBYTE> GenerateHavePayload(int index);
+ 	std::vector<OURBYTE> GenerateRequestPayload(int requestedLength);
+ 	//std::vector<OURBYTE> GeneratePiecePayload();
+-    std::vector<OURBYTE> GeneratePiecePayload(OURBYTE pieceData);
++    std::vector<OURBYTE> GeneratePiecePayload(int pieceIndex);
+ 	bool hasPayload(int messageType);
+ 	int messageType;
+ 
+diff --git a/TestingCise/Peer.cpp b/TestingCise/Peer.cpp
+index 9283697..d6a5be8 100644
+--- a/TestingCise/Peer.cpp
++++ b/TestingCise/Peer.cpp
+@@ -23,6 +23,14 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
+ 	lastPieceSize = fileSize % pieceSize;
+ 
+ 	listOfPieces.reserve(numPieces);
++
++	//file name inits
++	std::ostringstream oss;
++	oss << "peer_" << peerID;
++	subdir = oss.str();
++	oss << fileName;
++	subDirAndFile = oss.str();
++
+ 	//initialize all to false
+ 	if (fileComplete)
+ 	{
+@@ -30,6 +38,22 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
+ 		{
+ 			listOfPieces.push_back(true);
+ 		}
++		//put all 1s for a full file
++		
++		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
++		if (-1 == dir_err)
++		{
++			printf("Error creating directory, already exists");
++			remove(subDirAndFile.c_str());
++		}
++
++		std::ofstream myfile;
++		myfile.open(subDirAndFile.c_str());
++		for (int i = 0; i < fileSize; ++i)
++		{
++			myfile << "1"; //a char is one byte, fill all bytes full for a full file
++		}
++		myfile.close();
+ 	}
+ 	else
+ 	{
+@@ -37,6 +61,21 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
+ 		{
+ 			listOfPieces.push_back(false);
+ 		}
++		//put all 0s for an empty file
++		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
++		if (-1 == dir_err)
++		{
++			printf("Error creating directory, already exists");
++			remove(subDirAndFile.c_str());
++		}
++
++		std::ofstream myfile;
++		myfile.open(subDirAndFile.c_str());
++		for (int i = 0; i < fileSize; ++i)
++		{
++			myfile << "0"; //a char is one byte, fill all bytes empty for a full file
++		}
++		myfile.close();
+ 	}
+ 
+ 	//see peer one has piece 0 
+@@ -882,10 +921,12 @@ void Peer::receiveChokeMessage(std::vector<OURBYTE> messageStream)
+ 
+ void Peer::receiveInterestedMessage(std::vector<OURBYTE> messageStream)
+ {
++	interestedInMainPeer = true;
+ }
+ 
+ void Peer::receiveNotInterestedMessage(std::vector<OURBYTE> messageStream)
+ {
++	interestedInMainPeer = false;
+ }
+ 
+ void Peer::receiveHaveMessage(std::vector<OURBYTE> messageStream)
+@@ -898,4 +939,31 @@ void Peer::receiveRequestMessage(std::vector<OURBYTE> messageStream)
+ 
+ void Peer::receivePieceMessage(std::vector<OURBYTE> messageStream)
+ {
+-}
+\ No newline at end of file
++}
++
++void Peer::UploadPieces()
++{
++	for (std::vector<Peer*>::iterator i = otherPeers.begin(); i < otherPeers.end(); i++)
++	{
++		if ((*i)->isPrefferedNeighbor || (*i)->isOptomisticallyUnchokedNeighbor)
++		{
++			SendPieceMessage((*i)); //maybe not a great idea TODO decide
++		}
++	}
++}
++void Peer::SendPieceMessage(Peer * otherPeer)
++{
++	Message * m = new Message(lib->PIECE, doesItHaveAnyPieces(), listOfPieces, otherPeer->requestedPieceIndex); //todo check requested piece index
++	//std::cout << "here1";
++	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
++	delete m;
++	//std::cout << "here2";
++	int n = write(otherPeer->establishedSockfd, message, strlen(message)); //sends the bitfield message
++	if (n < 0)
++		error("ERROR writing to socket - sendPieceMessage");
++	else
++	{
++		std::cout << "piece message sent, requested index: " << otherPeer->requestedPieceIndex << std::endl;
++	}
++}
++
+diff --git a/TestingCise/Peer.h b/TestingCise/Peer.h
+index 9afd71a..0768bd5 100644
+--- a/TestingCise/Peer.h
++++ b/TestingCise/Peer.h
+@@ -39,6 +39,17 @@ public:
+ 	bool SendHandshakeMessageFromClient(int sockfd);
+ 	void SendClientBitfieldMessage(int sockfd);
+ 	void SendServerBitfieldMessage(int sockfd);
++
++	//loop through otherPeers to get these
++	//useless for the main peer
++	//each whether or not the peer is interested in the main peer, 
++	bool interestedInMainPeer = false;
++	bool isPrefferedNeighbor = false;
++	bool isOptomisticallyUnchokedNeighbor = false;
++	int requestedPieceIndex = -1;
++
++	int establishedSockfd = -1; //todo implement in and set everywhere
++
+ private:
+ 	utilLib * lib;
+ 
+@@ -107,5 +118,21 @@ private:
+ 	void receiveHaveMessage(std::vector<OURBYTE> messageStream);
+ 	void receiveRequestMessage(std::vector<OURBYTE> messageStream);
+ 	void receivePieceMessage(std::vector<OURBYTE> messageStream);
++
++	//recent funcs
++	void UploadPieces();
++
++	void SendPieceMessage(Peer * otherPeer);
++
++
++	//recent additions
++
++	//int optomisticUnchokingInterval; //m declared as float above
++	int prefferedNeighborDeterminationInterval; //p
++	int maxPrefferedNeighbors; //k - parameter on program start
++
++	std::string subdir;
++	std::string subDirAndFile;
++	std::string subDirAndLog; //todo
+ };
+ 
+diff --git a/TestingCise/stdafx.h b/TestingCise/stdafx.h
+index 0ee979a..1b9956d 100644
+--- a/TestingCise/stdafx.h
++++ b/TestingCise/stdafx.h
+@@ -11,6 +11,11 @@
+ #include <cstring>
+ #include <iostream>
+ #include <cstdlib>
++#include <sys/stat.h>
++#include <fstream>
++#include <string>
++#include <limits.h>
++#include <unistd.h>
+ //#include <tchar.h>
+ 
+ 
