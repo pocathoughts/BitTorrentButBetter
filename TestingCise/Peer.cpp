@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "Peer.h"
 #include "Message.h"
 
@@ -23,11 +23,20 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	lastPieceSize = fileSize % pieceSize;
 
 	listOfPieces.reserve(numPieces);
-
 	//file name inits
-	subdir = "peer_" + std::to_string(peerID);
-	subDirAndFile = "peer_" + std::to_string(peerID) + "/" + fileName;
+	std::cout << "HOLY FUCK";
 
+	//dont do this its fucking evil
+	//std::stringstream oss;
+	//oss << "peer_";
+	//oss << peerID; //WHY DOES THIS CAUSE MALLOC MEMORY ERROR
+	//subdir = oss.str();
+	//oss << fileName;
+	//subDirAndFile = oss.str();
+	//end evil
+
+	subdir = "peer_" + std::to_string(peerID);
+	subDirAndFile = subdir + "/" + fileName;
 	//initialize all to false
 	if (fileComplete)
 	{
@@ -36,21 +45,21 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			listOfPieces.push_back(true);
 		}
 		//put all 1s for a full file
-		
-		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-		if (-1 == dir_err)
-		{
-			printf("Error creating directory, already exists");
-			remove(subDirAndFile.c_str());
-		}
 
-		std::ofstream myfile;
-		myfile.open(subDirAndFile.c_str());
-		for (int i = 0; i < fileSize; ++i)
-		{
-			myfile << "1"; //a char is one byte, fill all bytes full for a full file
-		}
-		myfile.close();
+		//const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		//if (-1 == dir_err)
+		//{
+		//	printf("Error creating directory, already exists");
+		//	remove(subDirAndFile.c_str());
+		//}
+
+		//std::ofstream myfile;
+		//myfile.open(subDirAndFile.c_str());
+		//for (int i = 0; i < fileSize; ++i)
+		//{
+		//	myfile << "1"; //a char is one byte, fill all bytes full for a full file
+		//}
+		//myfile.close();
 	}
 	else
 	{
@@ -59,27 +68,26 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			listOfPieces.push_back(false);
 		}
 		//put all 0s for an empty file
-		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-		if (-1 == dir_err)
-		{
-			printf("Error creating directory, already exists");
-			remove(subDirAndFile.c_str());
-		}
+		//const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		//if (-1 == dir_err)
+		//{
+		//	printf("Error creating directory, already exists");
+		//	remove(subDirAndFile.c_str());
+		//}
 
-		std::ofstream myfile;
-		myfile.open(subDirAndFile.c_str());
-		for (int i = 0; i < fileSize; ++i)
-		{
-			myfile << "0"; //a char is one byte, fill all bytes empty for a full file
-		}
-		myfile.close();
+		//std::ofstream myfile;
+		//myfile.open(subDirAndFile.c_str());
+		//for (int i = 0; i < fileSize; ++i)
+		//{
+		//	myfile << "0"; //a char is one byte, fill all bytes empty for a full file
+		//}
+		//myfile.close();
 	}
-
 	//see peer one has piece 0 
 	//receive a message of 306/8 bytes with each bit representing a piece
-		//if (listOfPieces[index] == false && (*i) == true) 
-			//get it
-			//listOfPieces[index] = true;
+	//if (listOfPieces[index] == false && (*i) == true) 
+	//get it
+	//listOfPieces[index] = true;
 	CreateBitfield();
 
 	//comment back in once you can remotely start servers from other machines
@@ -145,7 +153,7 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 	//start listening (TCP Server)
 	std::cout << "starting server";
 	startServerLinux(); //needs to be implemented and called
-	//startServerWinsock();
+						//startServerWinsock();
 	if (preexistingPeers.size() == 0)
 	{
 		return;
@@ -533,15 +541,15 @@ bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int soc
 {
 	std::cout << "begin receiveHandshakeMessage\n";
 	//std::cout << lib->GetStringFromByteStream(receivedMessage) << "\n";
-	//Check if header has “P2PFILESHARINGPROJ”
+	//Check if header has ï¿½P2PFILESHARINGPROJï¿½
 	std::vector<OURBYTE>::iterator first = receivedMessage.begin();
 	std::vector<OURBYTE>::iterator last = receivedMessage.begin() + 18; //first 18 bytes
-	//std::cout << "A seg fault right after this means the message wasn't sent properly\n";
-	//lib->printByteStream(receivedMessage);
-	//std::vector<OURBYTE> headerPortion;
-	//headerPortion.reserve(18);
-	//headerPortion = std::vector<OURBYTE>(first, last); //seg fault on this line
-	//std::cout << "what is ashually causing the seg fault\n";
+																		//std::cout << "A seg fault right after this means the message wasn't sent properly\n";
+																		//lib->printByteStream(receivedMessage);
+																		//std::vector<OURBYTE> headerPortion;
+																		//headerPortion.reserve(18);
+																		//headerPortion = std::vector<OURBYTE>(first, last); //seg fault on this line
+																		//std::cout << "what is ashually causing the seg fault\n";
 
 	char * header = lib->GetStringFromByteStream(receivedMessage); //TODO NOAH GET HEADER FROM HS MESSAGE
 	header[18] = '\0';
@@ -682,15 +690,15 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 
 	//std::cout << "Server waiting for client bitfield message 2 \n";
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
-	//lib->printByteStream(returnMessage);
-	//std::cout << "Server waiting for client bitfield message 3\n";
+																				//lib->printByteStream(returnMessage);
+																				//std::cout << "Server waiting for client bitfield message 3\n";
 	SendClientBitfieldMessage(sockfd);
 	//waits for server's interested or not interested message, saves it for after sending back own message
 	//bitfield
 	AwaitMessage(sockfd); //handles the received interested or not interested message
 	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
-	//await returned "interested" or "not interested" message (loop await general message)
-	//called in startServer()
+												//await returned "interested" or "not interested" message (loop await general message)
+												//called in startServer()
 }
 void Peer::WaitForServerBitfieldMessage(int sockfd)
 {
@@ -823,7 +831,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	recv(sockfd, message, 256, 0);
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
 	DetermineInterested(returnMessage, sockfd); //send back interested message
-	
+
 	while (true)
 	{
 		AwaitMessage(sockfd); //loops forever basically
@@ -918,12 +926,10 @@ void Peer::receiveChokeMessage(std::vector<OURBYTE> messageStream)
 
 void Peer::receiveInterestedMessage(std::vector<OURBYTE> messageStream)
 {
-	interestedInMainPeer = true;
 }
 
 void Peer::receiveNotInterestedMessage(std::vector<OURBYTE> messageStream)
 {
-	interestedInMainPeer = false;
 }
 
 void Peer::receiveHaveMessage(std::vector<OURBYTE> messageStream)
@@ -937,30 +943,3 @@ void Peer::receiveRequestMessage(std::vector<OURBYTE> messageStream)
 void Peer::receivePieceMessage(std::vector<OURBYTE> messageStream)
 {
 }
-
-void Peer::UploadPieces()
-{
-	for (std::vector<Peer*>::iterator i = otherPeers.begin(); i < otherPeers.end(); i++)
-	{
-		if ((*i)->isPrefferedNeighbor || (*i)->isOptomisticallyUnchokedNeighbor)
-		{
-			SendPieceMessage((*i)); //maybe not a great idea TODO decide
-		}
-	}
-}
-void Peer::SendPieceMessage(Peer * otherPeer)
-{
-	Message * m = new Message(lib->PIECE, doesItHaveAnyPieces(), listOfPieces, otherPeer->requestedPieceIndex); //todo check requested piece index
-	//std::cout << "here1";
-	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
-	delete m;
-	//std::cout << "here2";
-	int n = write(otherPeer->establishedSockfd, message, strlen(message)); //sends the bitfield message
-	if (n < 0)
-		error("ERROR writing to socket - sendPieceMessage");
-	else
-	{
-		std::cout << "piece message sent, requested index: " << otherPeer->requestedPieceIndex << std::endl;
-	}
-}
-
