@@ -54,7 +54,7 @@ public:
 		//printByteStream(a);
 		int val = 0;
 		OURBYTE inv = reverseBitsInByte(a[0]);
-		val +=  * (int)inv.to_ulong();
+		val +=  (int)inv.to_ulong();
 		return val;
 	}
 	//calling setByte(2,1) makes //00000000 into //00000100
