@@ -33,7 +33,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	//end evil
 
 	//int a = peerID;
-	std::string PID = peerID;
+	//std::string PID = peerID;
 	//std::string baa = std::to_string(a);
 	subdir = "peer_"  + PID;
 	subDirAndFile = "peer_" + PID + "/" + fileName;
