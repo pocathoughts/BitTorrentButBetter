@@ -31,8 +31,8 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			listOfPieces.push_back(true);
 		}
 		//put all 1s for a full file
-		std::string subdir = "peer_" + itoa(peerID)c;
-		std::string subDirAndFile = "peer_" + itoa(peerID) + fileName;
+		std::string subdir = "peer_" + std::string(peerID);
+		std::string subDirAndFile = "peer_" + std::string(peerID) + fileName;
 		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		if (-1 == dir_err)
 		{
