@@ -902,7 +902,7 @@ void Peer::startServerLinux()
 			//begin server handshake process
 			//receive message
 			bzero(buffer, 255);
-			int = recv(new_socket, buffer, 256, 0);
+			int n = recv(new_socket, buffer, 256, 0);
 			//after connection, do the following
 			receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), new_socket); //await a handshake message
 			SendHandshakeMessageFromServer(new_socket); //send the handshake message back
