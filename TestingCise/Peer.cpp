@@ -689,7 +689,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	//bitfield
 	
 	std::cout << "awaiting message\n";
-	int n = 0;
+	n = 0;
 	char message2[256];
 	//waits for a return message
 	bzero(message2, 255);
