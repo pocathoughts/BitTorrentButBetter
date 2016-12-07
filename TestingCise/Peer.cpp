@@ -787,7 +787,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	recv(sockfd, message, 256, 0);
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message);
 	DetermineInterested(returnMessage, sockfd); //send back interested message
-	*/
+	
 	while (true)
 	{
 		AwaitMessage(sockfd); //loops forever basically
