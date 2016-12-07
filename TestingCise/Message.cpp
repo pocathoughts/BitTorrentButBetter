@@ -297,11 +297,6 @@ HandshakeMessage::HandshakeMessage(int _peerID)
 								 //�P2PFILESHARINGPROJ'
 	lib = new utilLib();
 	handshakeHeader = lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
-	lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
-	lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
-	lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
-	lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
-	lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
 
 	peerID = lib->GetByteStreamFromInt(_peerID);
 	GenerateHandshakeMessageByteStream(handshakeHeader, peerID);
