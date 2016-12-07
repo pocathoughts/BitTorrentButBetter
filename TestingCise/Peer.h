@@ -48,7 +48,7 @@ public:
 	bool isOptomisticallyUnchokedNeighbor = false;
 	int requestedPieceIndex = -1;
 
-	int establishedSockfd = -1;
+	int establishedSockfd = -1; //todo implement in and set everywhere
 
 private:
 	utilLib * lib;

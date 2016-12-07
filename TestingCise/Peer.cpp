@@ -37,11 +37,11 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		if (-1 == dir_err)
 		{
 			printf("Error creating directory, already exists");
-			remove(subDirAndFile);
+			remove(subDirAndFile.c_str());
 		}
 
 		std::ofstream myfile;
-		myfile.open(subDirAndFile);
+		myfile.open(subDirAndFile.c_str());
 		for (int i = 0; i < fileSize; ++i)
 		{
 			myfile << "1"; //a char is one byte, fill all bytes full for a full file
@@ -953,7 +953,7 @@ void Peer::SendPieceMessage(Peer * otherPeer)
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
 	delete m;
 	//std::cout << "here2";
-	n = write(otherPeer->establishedSockfd, message, strlen(message)); //sends the bitfield message
+	int n = write(otherPeer->establishedSockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
 		error("ERROR writing to socket - sendPieceMessage");
 	else
