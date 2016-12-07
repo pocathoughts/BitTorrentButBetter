@@ -60,7 +60,6 @@ Message::Message(int type, bool hasPiece, std::vector<bool> listOfPieces, int re
 	messageType = type;
 	messageLength = 1 + messagePayload.length;*/
 	std::cout << "message constructor\n";
-	delete lib;
 	lib = new utilLib();
 	std::cout << "message constructor 2\n";
 	GenerateActualMessageByteStream(type, hasPiece, listOfPieces, requestedIndex);
