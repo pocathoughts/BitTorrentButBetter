@@ -35,8 +35,8 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		//subDirAndFile = oss.str();
 	//end evil
 
-	//subdir = "peer_"  + std::to_string(peerID);
-	subDirAndFile = subdir + "/" + fileName;
+	subdir = "peer_"  + std::to_string(peerID);
+	subDirAndFile = "peer_" + std::to_string(peerID) + "/" + fileName;
 	//initialize all to false
 	if (fileComplete)
 	{
