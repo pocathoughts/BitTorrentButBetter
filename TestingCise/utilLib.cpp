@@ -58,21 +58,21 @@ void utilLib::pnlog(char * time, int peer_ID) { //logging preferred neighbors //
 	std::ofstream outfile;
 	char logname[] = "log_peer_num.log";
 	outfile.open(logname, std::ios_base::app);
-	outfile << sprintf("%c: Peer %d has the preferred neighbors %d \n", time, peer_ID, neighborList);
+	//outfile << sprintf("%c: Peer %d has the preferred neighbors %d \n", time, peer_ID, neighborList);
 }
 
 void utilLib::hplog(char * time, int peer_ID, int peer2_ID, int index) { //have piece log
 	std::ofstream outfile;
 	char logname[] = "log_peer_num.log";
 	outfile.open(logname, std::ios_base::app);
-	outfile << sprintf("%c: Peer %d received the 'have' message from %d for the piece %d\n", time, peer_ID, peer2_ID, neighborList);
+	//outfile << sprintf("%c: Peer %d received the 'have' message from %d for the piece %d\n", time, peer_ID, peer2_ID, neighborList);
 }
 
 void utilLib::dplog(char * time, int peer_ID, int peer2_ID, int index, int num_Pieces) { //downloading piece log
 	std::ofstream outfile;
 	char logname[] = "log_peer_num.log";
 	outfile.open(logname, std::ios_base::app);
-	outfile << sprintf("%c: Peer %d has downloaded the piece %d from %d. Now the number of pieces it has is %d.\n", time, peer_ID, index, peer2_ID, num_Pieces);
+	//outfile << sprintf("%c: Peer %d has downloaded the piece %d from %d. Now the number of pieces it has is %d.\n", time, peer_ID, index, peer2_ID, num_Pieces);
 
 }
 
