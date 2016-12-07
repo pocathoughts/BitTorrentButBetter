@@ -48,9 +48,9 @@ public:
 	int GetMessageTypeFromStream(std::vector<OURBYTE> stream)
 	{
 		//it's in the 5th byte
-		std::vector<OURBYTE>::const_iterator first = stream.begin();
-		std::vector<OURBYTE>::const_iterator last = stream.begin() + 18; //first 18 bytes
-		std::vector<OURBYTE> a(first, last);
+		std::vector<OURBYTE>::const_iterator first = stream.begin() + 5;
+		std::vector<OURBYTE>::const_iterator last = stream.begin() + 6; //first 18 bytes
+		std::vector<OURBYTE> a(first, last);//dangers=ous noah sofuhosfn;ihdsufiuh
 		return GetIntFromByteStream(a);
 	}
 	//calling setByte(2,1) makes //00000000 into //00000100
