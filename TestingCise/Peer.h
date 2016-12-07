@@ -107,5 +107,9 @@ private:
 	void receiveHaveMessage(std::vector<OURBYTE> messageStream);
 	void receiveRequestMessage(std::vector<OURBYTE> messageStream);
 	void receivePieceMessage(std::vector<OURBYTE> messageStream);
+
+	//recent adds
+	std::string subDirAndFile;
+	std::string subdir;
 };
 
