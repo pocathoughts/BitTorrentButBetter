@@ -20,6 +20,8 @@ public:
 
 	void WaitForClientBitfieldMessage(int sockfd);
 
+	void WaitForServerBitfieldMessage(int sockfd);
+
 	void startServerLinux();
 	void startClientLinux(char * hostName, int otherPeerID);
 
