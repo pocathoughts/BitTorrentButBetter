@@ -53,7 +53,7 @@ public:
 		a.push_back(stream[4]);
 		//printByteStream(a);
 		int val = 0;
-		OURBYTE inv = reverseBitsInByte((*i));
+		OURBYTE inv = reverseBitsInByte(a[0]);
 		val +=  * (int)inv.to_ulong();
 		return val;
 	}
