@@ -769,7 +769,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 	*/
 	while (true)
 	{
-		//AwaitMessage(sockfd); //loops forever basically
+		AwaitMessage(sockfd); //loops forever basically
 	}
 
 	//printf("Please enter the message: ");
