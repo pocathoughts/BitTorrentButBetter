@@ -1098,7 +1098,7 @@ void Peer::SendInterestedMessage(int sockfd)
 		error("ERROR writing to socket - SendInterestedMessage");
 	else
 	{
-		std::cout << "sent interested" << lib->getTime() << "\n";
+		std::cout << "sent interested\n";
 	}
 }
 
@@ -1113,7 +1113,7 @@ void Peer::SendNotInterestedMessage(int sockfd)
 		error("ERROR writing to socket - SendNotInterestedMessage");
 	else
 	{
-		std::cout << "sent not interested messagE" << lib->getTime() << "\n";
+		std::cout << "sent not interested messagE\n";
 	}
 }
 void Peer::receiveUnchokeMessage(std::vector<OURBYTE> messageStream)
