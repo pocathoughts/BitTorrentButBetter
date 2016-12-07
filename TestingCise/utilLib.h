@@ -51,8 +51,11 @@ public:
 		std::vector<OURBYTE> a;
 		a.reserve(1);
 		a.push_back(stream[4]);
-		printByteStream(a);
-		return GetIntFromByteStream(a);
+		//printByteStream(a);
+		int val = 0;
+		OURBYTE inv = reverseBitsInByte((*i));
+		val +=  * (int)inv.to_ulong();
+		return val;
 	}
 	//calling setByte(2,1) makes //00000000 into //00000100
 	void setBit(OURBYTE &byte, int bitNum, bool val)
