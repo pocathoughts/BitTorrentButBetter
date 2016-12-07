@@ -92,7 +92,7 @@ public:
 	{
 		//std::cout << "called byte stream to string\n";
 		std::vector<OURBYTE> word;
-		word.reserve(32);
+		word.reserve(33);
 		for (int i = 0; i < strlen(str); i++)
 		{
 			//sneaky catch for 0s
