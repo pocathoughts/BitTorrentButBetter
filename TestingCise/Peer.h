@@ -126,5 +126,12 @@ private:
 	//recent adds
 	std::string subDirAndFile;
 	std::string subdir;
+
+	//
+	int nextDeterminePreferredNeighborTime = 0;
+	int preferredNeighborInterval = 0; //p seconds
+
+	int nextDetermineOptomisticallyUnchokeTime = 0;
+
 };
 

@@ -141,10 +141,10 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 {
 
 	//START OF HARD CODING FOR TESTING FIRST CONNECTIONS
-	if (peerID == 1002)
+	if (preexistingPeers.size() >= 1)
 	{
 		std::cout << "num peers: " << preexistingPeers.size();
-		std::cout << "hard code, still need to test multiple users running server and client at same time...\n";
+		//std::cout << "hard code, still need to test multiple users running server and client at same time...\n";
 		startClientLinux(preexistingPeers[0]); //
 		return;
 	}
@@ -431,12 +431,21 @@ bool Peer::doesItHaveAnyPieces()
 
 void Peer::DeterminePreferredNeighbors()
 {
-
+	//time is greater than p seconds since last time
+	if (nextDeterminePreferredNeighborTime < time)
+	{
+		
+		//set next time (declare variable in header)
+		nextDeterminePreferredNeighborTime = time + preferredNeighborInterval;
+	}
 }
 
 void Peer::DetermineOptomisticallyUnchokedNeighbor()
 {
-
+	if (nextDetermineOptomisticallyUnchokeTime < time)
+	{
+		nextDetermineOptomisticallyUnchokeTime = time + optomisticUnchokingInterval;
+	}
 }
 
 
