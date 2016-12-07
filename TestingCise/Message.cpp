@@ -73,7 +73,9 @@ Message::~Message()
 void Message::GenerateActualMessageByteStream(int type, bool hasPiece, std::vector<bool> listOfPieces, int requestedIndex)
 {
 	std::cout << "generate bytestream\n";
-	std::vector<OURBYTE> payload = GeneratePayload(type, hasPiece, listOfPieces, requestedIndex);
+	std::vector<OURBYTE> payload;
+	payload.reserve(38);
+	payload = GeneratePayload(type, hasPiece, listOfPieces, requestedIndex);
 	std::cout << "generate bytestream 2\n";
 	std::vector<OURBYTE> messageLength = DetermineMessageLength();
 
