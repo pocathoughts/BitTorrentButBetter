@@ -24,7 +24,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 
 	listOfPieces.reserve(numPieces);
 	//file name inits
-	std::cout << "HOLY FUCK";
+	//std::cout << "HOLY FUCK";
 	
 	//dont do this its fucking evil
 		//std::stringstream oss;
@@ -46,20 +46,20 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		}
 		//put all 1s for a full file
 
-		//const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-		//if (-1 == dir_err)
-		//{
-		//	printf("Error creating directory, already exists");
-		//	remove(subDirAndFile.c_str());
-		//}
+		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		if (-1 == dir_err)
+		{
+			printf("Error creating directory, already exists");
+			remove(subDirAndFile.c_str());
+		}
 
-		//std::ofstream myfile;
-		//myfile.open(subDirAndFile.c_str());
-		//for (int i = 0; i < fileSize; ++i)
-		//{
-		//	myfile << "1"; //a char is one byte, fill all bytes full for a full file
-		//}
-		//myfile.close();
+		std::ofstream myfile;
+		myfile.open(subDirAndFile.c_str());
+		for (int i = 0; i < fileSize; ++i)
+		{
+			myfile << "1"; //a char is one byte, fill all bytes full for a full file
+		}
+		myfile.close();
 	}
 	else
 	{
@@ -68,20 +68,20 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			listOfPieces.push_back(false);
 		}
 		//put all 0s for an empty file
-		//const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-		//if (-1 == dir_err)
-		//{
-		//	printf("Error creating directory, already exists");
-		//	remove(subDirAndFile.c_str());
-		//}
+		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		if (-1 == dir_err)
+		{
+			printf("Error creating directory, already exists");
+			remove(subDirAndFile.c_str());
+		}
 
-		//std::ofstream myfile;
-		//myfile.open(subDirAndFile.c_str());
-		//for (int i = 0; i < fileSize; ++i)
-		//{
-		//	myfile << "0"; //a char is one byte, fill all bytes empty for a full file
-		//}
-		//myfile.close();
+		std::ofstream myfile;
+		myfile.open(subDirAndFile.c_str());
+		for (int i = 0; i < fileSize; ++i)
+		{
+			myfile << "0"; //a char is one byte, fill all bytes empty for a full file
+		}
+		myfile.close();
 	}
 	//see peer one has piece 0 
 	//receive a message of 306/8 bytes with each bit representing a piece
