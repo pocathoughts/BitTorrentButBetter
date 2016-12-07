@@ -780,7 +780,7 @@ void Peer::startClientLinux(char * hostName, int otherPeerID)
 
 	//send bitfield message
 	SendServerBitfieldMessage(sockfd); //sends the server a bitfield message
-	WaitForServerBitfieldMessage();
+	WaitForServerBitfieldMessage(sockfd);
 	//then waits to receive one
 	char message[256];
 	bzero(message, 255);
