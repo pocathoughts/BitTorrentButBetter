@@ -51,6 +51,7 @@ public:
 		std::vector<OURBYTE> a;
 		a.reserve(1);
 		a.push_back(stream[4]);
+		printByteStream(a);
 		return GetIntFromByteStream(a);
 	}
 	//calling setByte(2,1) makes //00000000 into //00000100
