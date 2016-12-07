@@ -606,7 +606,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 
 	int n = 0;
 	HandshakeMessage * h = new HandshakeMessage(peerID); //creates a handshake message using this peerID
-	char message[256];
+	char * message = new char[256];
 	message = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
 	delete h;
 	n = write(sockfd, message, strlen(message)); //sends the handshake message
