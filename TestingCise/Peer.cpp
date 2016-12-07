@@ -902,11 +902,11 @@ void Peer::startServerLinux()
 			//begin server handshake process
 			//receive message
 			bzero(buffer, 255);
-			n = recv(newsockfd, buffer, 256, 0);
+			int = recv(new_socket, buffer, 256, 0);
 			//after connection, do the following
-			receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), newsockfd); //await a handshake message
-			SendHandshakeMessageFromServer(newsockfd); //send the handshake message back
-			WaitForClientBitfieldMessage(newsockfd); //waits for the client to send a bitfield message and then sends one back
+			receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), new_socket); //await a handshake message
+			SendHandshakeMessageFromServer(new_socket); //send the handshake message back
+			WaitForClientBitfieldMessage(new_socket); //waits for the client to send a bitfield message and then sends one back
 			//while (true)
 			//{
 			//	std::cout << "awaiting message\n";
