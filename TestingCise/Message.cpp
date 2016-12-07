@@ -59,11 +59,13 @@ Message::Message(int type, bool hasPiece, std::vector<bool> listOfPieces, int re
 	/*messagePayload = messagePayload;
 	messageType = type;
 	messageLength = 1 + messagePayload.length;*/
-	std::cout << "message constructor type: " << type << std::endl;
+	std::cout << "message constructor begin type: " << type << std::endl;
 
 	lib = new utilLib();
 	//std::cout << "message constructor 2\n";
 	GenerateActualMessageByteStream(type, hasPiece, listOfPieces, requestedIndex);
+	std::cout << "message constructor completion type: " << type << std::endl;
+
 }
 Message::~Message()
 {
@@ -77,11 +79,11 @@ void Message::GenerateActualMessageByteStream(int type, bool hasPiece, std::vect
 	std::vector<OURBYTE> payload;
 	payload.reserve(38);
 	payload = GeneratePayload(type, hasPiece, listOfPieces, requestedIndex);
-	std::cout << "generate bytestream 2\n";
+	//std::cout << "generate bytestream 2\n";
 	std::vector<OURBYTE> messageLength;
 	messageLength.reserve(4);
 	messageLength = DetermineMessageLength();
-	std::cout << "generate bytestream 3\n";
+	//std::cout << "generate bytestream 3\n";
 	fullActualMessage.reserve(50); //max should be 38 + 4 + 1 = 43
 	//messageLength
 	for (int i = 0; i < 4; i++)
