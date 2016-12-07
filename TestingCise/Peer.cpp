@@ -461,6 +461,7 @@ Peer::~Peer()
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <arpa/inet.h>  
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -723,6 +724,10 @@ void Peer::WaitForServerBitfieldMessage(int sockfd)
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
 	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
 }
+
+#define TRUE   1
+#define FALSE  0
+#define PORT 9001
 void Peer::startServerLinux()
 {
 	/* //start original server
