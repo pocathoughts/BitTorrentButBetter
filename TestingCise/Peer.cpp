@@ -38,7 +38,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	subDirAndFile = "peer_" + std::to_string(peerID) + "/" + fileName;
 	//std::cout<<"HIIIIII" + subDirAndFile;
 	//int a = peerID;
-	subDirAndLog = "log_peer_" + std::to_string(peerID) + ".log";
+	//subDirAndLog = "log_peer_" + std::to_string(peerID) + ".log";
 	//subDirAndLog;// = "peer_" + std::to_string(peerID) + "/" + fileName;
 	//initialize all to false
 	if (fileComplete)
