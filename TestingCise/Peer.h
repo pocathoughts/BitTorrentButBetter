@@ -29,6 +29,7 @@ public:
 	void CreateBitfield();
 	
 	void AwaitMessage(int sockfd);
+	void HandleMessage(int sockfd, char * message);
 	bool receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int sockfd);
 	void DeterminePreferredNeighbors();
 	void DetermineOptomisticallyUnchokedNeighbor();
