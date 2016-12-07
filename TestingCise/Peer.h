@@ -133,6 +133,5 @@ private:
 
 	std::string subdir;
 	std::string subDirAndFile;
-	std::string subDirAndLog; //todo
 };
 

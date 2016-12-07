@@ -22,14 +22,11 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	numPieces = ceil((float)fileSize / (float)pieceSize);
 	lastPieceSize = fileSize % pieceSize;
 
-	//listOfPieces.reserve(numPieces);
+	listOfPieces.reserve(numPieces);
 
 	//file name inits
-	std::ostringstream oss;
-	oss << "peer_" << peerID;
-	subdir = oss.str();
-	oss << "/" << fileName;
-	subDirAndFile = oss.str();
+	subdir = "peer_" + std::to_string(peerID);
+	subDirAndFile = "peer_" + std::to_string(peerID) + "/" + fileName;
 
 	//initialize all to false
 	if (fileComplete)
@@ -563,9 +560,7 @@ bool Peer::receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int soc
 	//get peerID from end of handshake message
 	first = receivedMessage.begin() + 28; //last 4 bytes
 	last = receivedMessage.end();
-	std::vector<OURBYTE> peerIDPortion; 
-	peerIDPortion.reserve(4);
-	peerIDPortion = std::vector<OURBYTE>(first, last);
+	std::vector<OURBYTE> peerIDPortion(first, last);
 
 	int receivedPeerID = lib->GetIntFromByteStream(peerIDPortion); //TODO NOAH GET PEER ID FROM HS MESSAGE
 																   //Check if peerID is in list of peerIDs
@@ -606,9 +601,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 
 	int n = 0;
 	HandshakeMessage * h = new HandshakeMessage(peerID); //creates a handshake message using this peerID
-	char * message = new char[256];
-	message = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
-	delete h;
+	char * message = lib->GetStringFromByteStream(h->GetHandshakeMessageByteStream());
 	n = write(sockfd, message, strlen(message)); //sends the handshake message
 	if (n < 0)
 		error("ERROR writing to socket - SendHandshakeMessageFromClient");
@@ -628,12 +621,7 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 		std::cout << message << "\n";
 	}
 	//analyze returned handshake message
-	std::vector<OURBYTE> returnMessage;
-	std::cout << "uh wtf\n";
-	returnMessage.reserve(32);
-	std::cout << "uh wtf\n";
-	returnMessage = lib->GetByteStreamFromString(message); //MESSAGE
-	std::cout << "uh wtf\n";
+	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString((char*)message); //MESSAGE
 	return receiveHandshakeMessage(returnMessage, sockfd);
 }
 void Peer::SendClientBitfieldMessage(int sockfd)
