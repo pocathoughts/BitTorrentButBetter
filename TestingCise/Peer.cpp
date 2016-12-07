@@ -613,7 +613,7 @@ void Peer::SendServerBitfieldMessage(int sockfd)
 	Message * m = new Message(lib->BITFIELD, doesItHaveAnyPieces(), listOfPieces, 0);
 	std::cout << "here1";
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
-	delete m;
+	//delete m;
 	std::cout << "here2";
 	n = write(sockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
