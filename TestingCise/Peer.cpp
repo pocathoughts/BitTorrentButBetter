@@ -145,7 +145,7 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 	{
 		std::cout << "num peers: " << preexistingPeers.size();
 		std::cout << "hard code, still need to test multiple users running server and client at same time...\n";
-		startClientLinux(preexistingPeers()[0]); //
+		startClientLinux(preexistingPeers[0]); //
 		return;
 	}
 	//END OF HARD CODING FOR TESTING FIRST CONNECTIONS
