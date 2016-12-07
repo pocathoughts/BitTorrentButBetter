@@ -89,7 +89,8 @@ public:
 	}
 	std::vector<OURBYTE> GetByteStreamFromString(char * str)
 	{
-		std::vector<OURBYTE> * word = new std::vector<OURBYTE>();
+		std::cout << "called\n";
+		std::vector<OURBYTE> word;
 		for (int i = 0; i < strlen(str); i++)
 		{
 			//sneaky catch for 0s
@@ -97,14 +98,14 @@ public:
 			{
 				OURBYTE b(0); //was b
 				std::cout << "is this the problem\n";
-				word->push_back(b);
+				word.push_back(b);
 				continue;
 			}
 			OURBYTE b(str[i]);
-			std::cout << "or is it this 2\n";
-			word->push_back(b);
+			std::cout << "or is it this\n";
+			word.push_back(b);
 		}
-		return *word;
+		return word;
 	}
 	char GetCharFromByte(OURBYTE b)
 	{
