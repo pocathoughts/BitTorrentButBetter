@@ -130,5 +130,9 @@ private:
 	//int optomisticUnchokingInterval; //m declared as float above
 	int prefferedNeighborDeterminationInterval; //p
 	int maxPrefferedNeighbors; //k - parameter on program start
+
+	std::string subdir;
+	std::string subDirAndFile;
+	std::string subDirAndLog; //todo
 };
 

@@ -23,6 +23,14 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	lastPieceSize = fileSize % pieceSize;
 
 	listOfPieces.reserve(numPieces);
+
+	//file name inits
+	std::ostringstream oss;
+	oss << "peer_" << peerID;
+	subdir = oss.str();
+	oss << fileName;
+	subDirAndFile = oss.str();
+
 	//initialize all to false
 	if (fileComplete)
 	{
@@ -31,8 +39,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			listOfPieces.push_back(true);
 		}
 		//put all 1s for a full file
-		std::string subdir = "peer_" + std::string(peerID);
-		std::string subDirAndFile = "peer_" + std::string(peerID) + fileName;
+		
 		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		if (-1 == dir_err)
 		{
@@ -55,8 +62,6 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			listOfPieces.push_back(false);
 		}
 		//put all 0s for an empty file
-		std::string subdir = "peer_" + std::string(peerID);
-		std::string subDirAndFile = "peer_" + std::string(peerID) + fileName;
 		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		if (-1 == dir_err)
 		{
