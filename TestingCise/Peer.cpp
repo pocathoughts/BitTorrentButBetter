@@ -481,15 +481,7 @@ void error(const char *msg)
 //main decision loop for messafe reception
 void Peer::AwaitMessage(int sockfd)
 {
-	std::cout << "awaiting message\n";
-	int n = 0;
-	char message[256];
-	//waits for a return message
-	bzero(message, 255);
-	while (strlen(message) < 3) //shouldnt have to do this, it should block
-	{
-		n = recv(sockfd, message, 256, 0);
-	}
+	
 	std::vector<OURBYTE> messageStream = lib->GetByteStreamFromString(message);
 	int type = lib->GetMessageTypeFromStream(messageStream);
 	std::cout << "received message of type: " << type << std::endl;
@@ -765,6 +757,15 @@ void Peer::startServerLinux()
 	WaitForClientBitfieldMessage(newsockfd); //waits for the client to send a bitfield message and then sends one back
 	while (true)
 	{
+		std::cout << "awaiting message\n";
+		int n = 0;
+		char message[256];
+		//waits for a return message
+		bzero(message, 255);
+		while (strlen(message) < 3) //shouldnt have to do this, it should block
+		{
+			n = recv(sockfd, message, 256, 0);
+		}
 		AwaitMessage(newsockfd); //this call will receive the interested or not interested method
 	}
 
@@ -838,6 +839,15 @@ void Peer::startClientLinux(Peer * otherPeer)
 	
 	while (true)
 	{
+		std::cout << "awaiting message\n";
+		int n = 0;
+		char message[256];
+		//waits for a return message
+		bzero(message, 255);
+		//while (strlen(message) < 3) //shouldnt have to do this, it should block
+		//{
+			n = recv(sockfd, message, 256, 0);
+		//}
 		AwaitMessage(sockfd); //loops forever basically
 	}
 
