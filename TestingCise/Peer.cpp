@@ -67,7 +67,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		{
 			listOfPieces.push_back(false);
 		}
-		put all 0s for an empty file
+		//put all 0s for an empty file
 		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		if (-1 == dir_err)
 		{
