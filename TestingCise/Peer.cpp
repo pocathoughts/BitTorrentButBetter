@@ -786,6 +786,7 @@ void Peer::startClientLinux(Peer * otherPeer)
 	char * hostName = otherPeer->hostName;
 	int otherPeerID = otherPeer->peerID;
 	std::cout << "beginning start client\n";
+	std::cout << hostName << " " << otherPeerID;
 	int sockfd, portno, n;
 	struct sockaddr_in serv_addr;
 	struct hostent *server;
