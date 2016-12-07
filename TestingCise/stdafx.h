@@ -11,6 +11,11 @@
 #include <cstring>
 #include <iostream>
 #include <cstdlib>
+#include <sys/stat.h>
+#include <fstream>
+#include <string>
+#include <limits.h>
+#include <unistd.h>
 //#include <tchar.h>
 
 
