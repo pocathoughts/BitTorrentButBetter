@@ -50,7 +50,7 @@ public:
 		//it's in the 5th byte
 		//printByteStream(a);
 		int val = 0;
-		OURBYTE inv = reverseBitsInByte(stream[4]);
+		OURBYTE inv = (stream[4]);
 		val +=  (int)inv.to_ulong();
 		return val;
 	}
