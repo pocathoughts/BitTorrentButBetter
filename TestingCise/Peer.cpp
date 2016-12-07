@@ -479,7 +479,7 @@ void error(const char *msg)
 }
 
 //main decision loop for messafe reception
-void Peer::AwaitMessage(int sockfd)
+void Peer::HandleMessage(int sockfd, char * message)
 {
 	
 	std::vector<OURBYTE> messageStream = lib->GetByteStreamFromString(message);
@@ -687,7 +687,17 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	SendClientBitfieldMessage(sockfd);
 	//waits for server's interested or not interested message, saves it for after sending back own message
 	//bitfield
-	AwaitMessage(sockfd); //handles the received interested or not interested message
+	
+	std::cout << "awaiting message\n";
+	int n = 0;
+	char message2[256];
+	//waits for a return message
+	bzero(message2, 255);
+	while (strlen(message2) < 3) //shouldnt have to do this, it should block
+	{
+		n = recv(sockfd, message2, 256, 0);
+	}
+	HandleMessage(sockfd, message2); //handles the received interested or not interested message
 	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
 	//await returned "interested" or "not interested" message (loop await general message)
 	//called in startServer()
@@ -766,7 +776,7 @@ void Peer::startServerLinux()
 		{
 			n = recv(sockfd, message, 256, 0);
 		}
-		AwaitMessage(newsockfd); //this call will receive the interested or not interested method
+		HandleMessage(newsockfd, message); //this call will receive the interested or not interested method
 	}
 
 
@@ -848,7 +858,7 @@ void Peer::startClientLinux(Peer * otherPeer)
 		//{
 			n = recv(sockfd, message, 256, 0);
 		//}
-		AwaitMessage(sockfd); //loops forever basically
+		HandleMessage(sockfd, message); //loops forever basically
 	}
 
 	//printf("Please enter the message: ");
