@@ -81,7 +81,7 @@ void Message::GenerateActualMessageByteStream(int type, bool hasPiece, std::vect
 	messageLength.reserve(4);
 	messageLength = DetermineMessageLength();
 	std::cout << "generate bytestream 3\n";
-
+	fullActualMessage.reserve(50); //max should be 38 + 4 + 1 = 43
 	//messageLength
 	for (int i = 0; i < 4; i++)
 	{
