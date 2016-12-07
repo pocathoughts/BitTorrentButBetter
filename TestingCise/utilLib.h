@@ -122,7 +122,8 @@ public:
 	char * GetStringFromByteStream(std::vector<OURBYTE> stream)
 	{
 		std::cout << "OH DEAR LORD FUCK\N";
-		char * str = new char[stream.size()]; //could be a long stream
+		char * str;
+		str = new char[stream.size()]; //could be a long stream
 		std::cout << "OH DEAR LORD\N";
 		int index = 0;
 		OURBYTE b;
