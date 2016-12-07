@@ -722,7 +722,7 @@ void Peer::WaitForServerBitfieldMessage(int sockfd)
 
 	//std::cout << "client waiting for Server bitfield message 2 \n";
 	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
-	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
+	//DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
 }
 
 #define TRUE   1
