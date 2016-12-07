@@ -13,8 +13,6 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	//set neighborlist
 	lib->setNeighborList(GetAndSetListOfNeighbors());
 
-
-	// lolz love the name
 	optomisticallyUnchokedNeighbor = NULL;
 	//std::vector<Peer*> otherPeers = preexistingPeers;
 	//probably best to handle the above upon a successful connection
@@ -36,6 +34,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 
 	subdir = "peer_"  + std::to_string(peerID);
 	subDirAndFile = "peer_" + std::to_string(peerID) + "/" + fileName;
+	subDirAndLog = "peer_" + std::to_string(peerID) + "/" + "log_peer_" + to_string(peerID) + ".log";
 	//subDirAndLog;// = "peer_" + std::to_string(peerID) + "/" + fileName;
 	//initialize all to false
 	if (fileComplete)
@@ -107,8 +106,6 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete)
 	//set neighborlist
 	lib->setNeighborList(GetAndSetListOfNeighbors());
 
-
-	// lolz love the name
 	optomisticallyUnchokedNeighbor = NULL;
 	//std::vector<Peer*> otherPeers = preexistingPeers;
 	//probably best to handle the above upon a successful connection
@@ -641,13 +638,10 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 void Peer::SendClientBitfieldMessage(int sockfd)
 {
 	int n = 0;
-	//std::cout << "here";
 	Message * m = new Message(lib->BITFIELD, doesItHaveAnyPieces(), listOfPieces, 0);
-	//std::cout << "here1";
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
 	delete m;
-	//std::cout << "here2";
-	n = write(sockfd, message, strlen(message)); //sends the bitfield message
+	n = write(sockfd, message, strlen(message)); //actually sends the bitfield message
 	if (n < 0)
 		error("ERROR writing to socket - SendClientBitfieldMessage");
 	else
