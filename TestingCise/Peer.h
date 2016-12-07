@@ -29,7 +29,7 @@ public:
 	void CreateBitfield();
 	
 	void AwaitMessage(int sockfd);
-	void git pull origin workingFORREAL && g++ - std = c++11 * .cpp - o peerProcess.o - w && . / peerProcess.o 1001(int sockfd, char * message);
+	void HandleMessage(int sockfd, char * message);
 	bool receiveHandshakeMessage(std::vector<OURBYTE> receivedMessage, int sockfd);
 	void DeterminePreferredNeighbors();
 	void DetermineOptomisticallyUnchokedNeighbor();
