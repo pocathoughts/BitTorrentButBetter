@@ -120,6 +120,8 @@ private:
 	//recent funcs
 	void UploadPieces();
 
+	void SendPieceMessage(Peer * otherPeer);
+
 
 	//recent additions
 
