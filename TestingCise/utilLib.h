@@ -100,8 +100,9 @@ public:
 				word.push_back(b);
 				continue;
 			}
-			OURBYTE b(str[i]);
 			std::cout << "or is it this\n";
+			OURBYTE b(str[i]);
+			std::cout << "or is it this 2\n";
 			word.push_back(b);
 		}
 		return word;
