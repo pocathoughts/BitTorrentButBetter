@@ -886,6 +886,7 @@ void Peer::startServerLinux()
 		{
 			printf("select error");
 		} 
+	
 
 		//If something happened on the master socket , then its an incoming connection
 		if (FD_ISSET(master_socket, &readfds))
@@ -958,6 +959,7 @@ void Peer::startServerLinux()
 				//Echo back the message that came in
 				else
 				{
+					HandleMessage(client_socket[i], buffer);
 					//set the string terminating NULL byte on the end of the data read
 					//buffer[valread] = '\0';
 					//send(sd, buffer, strlen(buffer), 0);
