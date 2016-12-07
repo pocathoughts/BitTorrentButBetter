@@ -44,7 +44,7 @@ public:
 		BITFIELD,
 		REQUEST,
 		PIECE
-	};
+	};//
 	int GetMessageTypeFromStream(std::vector<OURBYTE> stream)
 	{
 		//it's in the 5th byte
