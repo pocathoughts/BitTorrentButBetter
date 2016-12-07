@@ -119,6 +119,7 @@ private:
 	void receiveRequestMessage(std::vector<OURBYTE> messageStream);
 	void receivePieceMessage(std::vector<OURBYTE> messageStream);
 
+<<<<<<< HEAD
 	//recent funcs
 	void UploadPieces();
 
@@ -134,5 +135,10 @@ private:
 	std::string subdir;
 	std::string subDirAndFile;
 	std::string subDirAndLog; //todo
+=======
+	//recent adds
+	std::string subDirAndFile;
+	std::string subdir;
+>>>>>>> e23ef0b0bdf6f959380779c032e9be8dee65d169
 };
 

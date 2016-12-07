@@ -22,6 +22,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	numPieces = ceil((float)fileSize / (float)pieceSize);
 	lastPieceSize = fileSize % pieceSize;
 
+<<<<<<< HEAD
 	//listOfPieces.reserve(numPieces);
 
 	//file name inits
@@ -31,6 +32,23 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	oss << "/" << fileName;
 	subDirAndFile = oss.str();
 
+=======
+	listOfPieces.reserve(numPieces);
+	//file name inits
+	//std::cout << "HOLY FUCK";
+	
+	//dont do this its fucking evil
+		//std::stringstream oss;
+		//oss << "peer_";
+		//oss << peerID; //WHY DOES THIS CAUSE MALLOC MEMORY ERROR
+		//subdir = oss.str();
+		//oss << fileName;
+		//subDirAndFile = oss.str();
+	//end evil
+
+	subdir = "peer_"  + std::to_string(peerID);
+	subDirAndFile = subdir + "/" + fileName;
+>>>>>>> e23ef0b0bdf6f959380779c032e9be8dee65d169
 	//initialize all to false
 	if (fileComplete)
 	{
@@ -39,7 +57,11 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			listOfPieces.push_back(true);
 		}
 		//put all 1s for a full file
+<<<<<<< HEAD
 		
+=======
+
+>>>>>>> e23ef0b0bdf6f959380779c032e9be8dee65d169
 		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		if (-1 == dir_err)
 		{
@@ -68,6 +90,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			printf("Error creating directory, already exists");
 			remove(subDirAndFile.c_str());
 		}
+<<<<<<< HEAD
 
 		std::ofstream myfile;
 		myfile.open(subDirAndFile.c_str());
@@ -77,7 +100,17 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		}
 		myfile.close();
 	}
+=======
+>>>>>>> e23ef0b0bdf6f959380779c032e9be8dee65d169
 
+		std::ofstream myfile;
+		myfile.open(subDirAndFile.c_str());
+		for (int i = 0; i < fileSize; ++i)
+		{
+			myfile << "0"; //a char is one byte, fill all bytes empty for a full file
+		}
+		myfile.close();
+	}
 	//see peer one has piece 0 
 	//receive a message of 306/8 bytes with each bit representing a piece
 		//if (listOfPieces[index] == false && (*i) == true) 
