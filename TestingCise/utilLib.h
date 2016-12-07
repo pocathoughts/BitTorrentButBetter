@@ -122,15 +122,13 @@ public:
 	char * GetStringFromByteStream(std::vector<OURBYTE> stream)
 	{
 		std::cout << "OH DEAR LORD FUCK\N";
+		std::cout << stream.size();
 		char * str;
 		str = new char[stream.size()]; //could be a long stream
-		std::cout << "OH DEAR LORD\N";
 		int index = 0;
 		OURBYTE b;
-		std::cout << "OH DEAR LORD\N";
 		for (std::vector<OURBYTE>::iterator i = stream.begin(); i < stream.end(); i++)
 		{
-			std::cout << "OH DEAR LORD 1\N";
 			char c = GetCharFromByte((*i));
 			str[index] = c;
 			//sneaky catch for 0s
@@ -140,7 +138,6 @@ public:
 			}
 			index++;
 		}
-		std::cout << "OH DEAR LORD\N";
 		str[index] = '\0';
 		return str;
 	}
