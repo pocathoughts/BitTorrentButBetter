@@ -935,7 +935,7 @@ void Peer::startServerLinux()
 				}
 			}
 		}
-
+		std::cout << "a";
 		//else its some IO operation on some other socket :)
 		for (i = 0; i < max_clients; i++)
 		{
