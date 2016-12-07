@@ -477,7 +477,7 @@ void Peer::AwaitMessage(int sockfd)
 	else if (type == 5) {
 		//bitfield message
 		//will never be called in this function, handled in StartServer and StartClient
-		std::cout << "THIS SHOULD NEVER HAPPEN\n";
+		//std::cout << "THIS SHOULD NEVER HAPPEN\n"; //changed my mind it's coo'
 	}
 	else if (type == 6) {
 		//request message
@@ -649,17 +649,34 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	//lib->printByteStream(returnMessage);
 	std::cout << "Server waiting for client bitfield message 3\n";
 	SendClientBitfieldMessage(sockfd);
-	//waits for clients interested or not interested message, saves it for after sending back own message
+	//waits for server's interested or not interested message, saves it for after sending back own message
+	//bitfield
 	AwaitMessage(sockfd); //handles the received interested or not interested message
 	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
-	while (true)
-	{
-		AwaitMessage(sockfd);
-	}
 	//await returned "interested" or "not interested" message (loop await general message)
 	//called in startServer()
 }
+void Peer::WaitForServerBitfieldMessage(int sockfd)
+{
+	std::cout << "client waiting for Server bitfield message\n";
+	int n = 0;
 
+	char message[256];
+	bzero(message, 255);
+
+	//hacky
+	while (strlen(message) < 10)
+	{
+		n = recv(sockfd, message, 256, 0);
+	}
+
+	if (n < 0)
+		error("ERROR reading socket");
+
+	std::cout << "client waiting for Server bitfield message 2 \n";
+	std::vector<OURBYTE> returnMessage = lib->GetByteStreamFromString(message); //this is a bitfield message
+	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
+}
 void Peer::startServerLinux()
 {
 	std::cout << "begin start server\n";
@@ -702,7 +719,10 @@ void Peer::startServerLinux()
 	receiveHandshakeMessage(lib->GetByteStreamFromString(buffer), newsockfd); //await a handshake message
 	SendHandshakeMessageFromServer(newsockfd); //send the handshake message back
 	WaitForClientBitfieldMessage(newsockfd); //waits for the client to send a bitfield message and then sends one back
-	AwaitMessage(newsockfd); //this call will receive the interested or not interested method
+	while (true)
+	{
+		AwaitMessage(newsockfd); //this call will receive the interested or not interested method
+	}
 
 
 
