@@ -96,10 +96,12 @@ public:
 			if (str[i] == '$')
 			{
 				OURBYTE b(0); //was b
+				std::cout << "is this the problem\n";
 				word.push_back(b);
 				continue;
 			}
 			OURBYTE b(str[i]);
+			std::cout << "or is it this\n";
 			word.push_back(b);
 		}
 		return word;
