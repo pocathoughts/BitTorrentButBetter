@@ -49,7 +49,7 @@ public:
 	{
 		//it's in the 5th byte
 		std::vector<OURBYTE>::const_iterator first = stream.begin() + 4;
-		std::vector<OURBYTE>::const_iterator last = stream.begin() + 5; //first 18 bytes
+		std::vector<OURBYTE>::const_iterator last = stream.begin() + 4; //first 18 bytes
 		std::vector<OURBYTE> a(first, last);//dangers=ous noah sofuhosfn;ihdsufiuh
 		return GetIntFromByteStream(a);
 	}
