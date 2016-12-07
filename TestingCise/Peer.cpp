@@ -24,6 +24,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 
 	listOfPieces.reserve(numPieces);
 	//file name inits
+	std::cout << "HOLY FUCK";
 	std::ostringstream oss;
 	oss << "peer_" << peerID;
 	subdir = oss.str();
