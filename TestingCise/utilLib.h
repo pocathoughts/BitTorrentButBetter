@@ -92,19 +92,19 @@ public:
 	{
 		//std::cout << "called byte stream to string\n";
 		std::vector<OURBYTE> word;
-		word.reserve(32);
+		word.reserve(33);
 		for (int i = 0; i < strlen(str); i++)
 		{
 			//sneaky catch for 0s
 			if (str[i] == '$')
 			{
 				OURBYTE b(0); //was b
-				//std::cout << "is this the problem\n";
+				std::cout << "is this the problem\n";
 				word.push_back(b);
 				continue;
 			}
 			OURBYTE b(str[i]);
-			//std::cout << "or is it this: ";
+			std::cout << "or is it this: ";
 			word.push_back(b);
 			//std::cout << word.size() << std::endl;
 		}
@@ -115,13 +115,12 @@ public:
 		unsigned long i = b.to_ulong();
 		//if (i <= CHAR_MAX)
 		return static_cast<char>(i);
-		return NULL;
 	}
 
 	//try to avoid this it throws seg faults sometimes but not all the time dont ask me lawl
 	char * GetStringFromByteStream(std::vector<OURBYTE> stream)
 	{
-		char * str = new char[50]; //could be a long stream
+		char * str = new char[43]; //could be a long stream
 		int index = 0;
 		OURBYTE b;
 		for (std::vector<OURBYTE>::iterator i = stream.begin(); i < stream.end(); i++)
