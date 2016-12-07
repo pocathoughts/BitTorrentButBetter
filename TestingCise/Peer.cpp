@@ -77,7 +77,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		}
 		myfile.close();
 	}
-
+	oss.clear();
 	//see peer one has piece 0 
 	//receive a message of 306/8 bytes with each bit representing a piece
 		//if (listOfPieces[index] == false && (*i) == true) 
