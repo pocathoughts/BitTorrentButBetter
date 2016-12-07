@@ -625,7 +625,9 @@ bool Peer::SendHandshakeMessageFromClient(int sockfd)
 	}
 	//analyze returned handshake message
 	std::vector<OURBYTE> returnMessage;
+	std::cout << "uh wtf\n";
 	returnMessage.reserve(32);
+	std::cout << "uh wtf\n";
 	returnMessage = lib->GetByteStreamFromString(message); //MESSAGE
 	std::cout << "uh wtf\n";
 	return receiveHandshakeMessage(returnMessage, sockfd);
