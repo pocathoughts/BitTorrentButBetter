@@ -43,12 +43,12 @@ public:
 	//loop through otherPeers to get these
 	//useless for the main peer
 	//each whether or not the peer is interested in the main peer, 
-	bool interestedInMainPeer = false;
-	bool isPrefferedNeighbor = false;
-	bool isOptomisticallyUnchokedNeighbor = false;
-	int requestedPieceIndex = -1;
+	bool interestedInMainPeer;
+	bool isPrefferedNeighbor;
+	bool isOptomisticallyUnchokedNeighbor;
+	int requestedPieceIndex;
 
-	int establishedSockfd = -1; //todo implement in and set everywhere
+	int establishedSockfd; //todo implement in and set everywhere
 
 private:
 	utilLib * lib;
@@ -71,9 +71,9 @@ private:
 	int peerIsChoking;
 	
 	//set when a handshake is supposed to be returned
-	bool serverReturnHandshakeMessage = false;
+	bool serverReturnHandshakeMessage ;
 	//if the client has just connected to the server and is expecting a handshake message
-	bool clientExpectingHandshakeMessage = false;
+	bool clientExpectingHandshakeMessage ;
 	std::vector<OURBYTE> bitfield;
 	void SetBitfieldToEmpty();
 	void SetBitfieldToFull();

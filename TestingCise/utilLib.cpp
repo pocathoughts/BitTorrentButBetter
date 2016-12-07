@@ -80,7 +80,7 @@ void utilLib::cdlog(char * time, int peer_ID) { //completed download log
 	std::ofstream outfile;
 	char logname[] = "log_peer_num.log";
 	outfile.open(logname, std::ios_base::app);
-	outfile << sprintf("%c: Peer %d	has downloaded the complete file.\n", time, peer_ID);
+	//outfile << sprintf("%c: Peer %d	has downloaded the complete file.\n", time, peer_ID);
 }
 
 char * utilLib::getTime()
