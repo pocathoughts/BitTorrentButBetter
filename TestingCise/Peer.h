@@ -109,7 +109,7 @@ private:
 	void receivePieceMessage(std::vector<OURBYTE> messageStream);
 
 	//recent adds
-	//std::string subDirAndFile;
-	//std::string subdir;
+	std::string subDirAndFile;
+	std::string subdir;
 };
 
