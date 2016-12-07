@@ -121,7 +121,7 @@ public:
 	//try to avoid this it throws seg faults sometimes but not all the time dont ask me lawl
 	char * GetStringFromByteStream(std::vector<OURBYTE> stream)
 	{
-		char * str = new char[50]; //could be a long stream
+		char * str = new char[43]; //could be a long stream
 		int index = 0;
 		OURBYTE b;
 		for (std::vector<OURBYTE>::iterator i = stream.begin(); i < stream.end(); i++)
