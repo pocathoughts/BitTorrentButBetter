@@ -153,7 +153,7 @@ void Peer::InitializeTCPConnections(std::vector<Peer*> preexistingPeers)
 	//start listening (TCP Server)
 	std::cout << "starting server";
 	startServerLinux(); //needs to be implemented and called
-	//startServerWinsock();
+	//nothing below this will run
 	if (preexistingPeers.size() == 0)
 	{
 		return;
@@ -431,21 +431,23 @@ bool Peer::doesItHaveAnyPieces()
 
 void Peer::DeterminePreferredNeighbors()
 {
-	//time is greater than p seconds since last time
-	if (nextDeterminePreferredNeighborTime < time)
-	{
-		
-		//set next time (declare variable in header)
-		nextDeterminePreferredNeighborTime = time + preferredNeighborInterval;
-	}
+	////time is greater than p seconds since last time
+	//if (nextDeterminePreferredNeighborTime < time)
+	//{
+	//	
+	//	//set next time (declare variable in header)
+	//	nextDeterminePreferredNeighborTime = time + preferredNeighborInterval;
+	//}
 }
 
 void Peer::DetermineOptomisticallyUnchokedNeighbor()
 {
+	/*
 	if (nextDetermineOptomisticallyUnchokeTime < time)
 	{
 		nextDetermineOptomisticallyUnchokeTime = time + optomisticUnchokingInterval;
 	}
+	*/
 }
 
 
