@@ -91,6 +91,7 @@ public:
 	{
 		std::cout << "called\n";
 		std::vector<OURBYTE> word;
+		word.reserve(32);
 		for (int i = 0; i < strlen(str); i++)
 		{
 			//sneaky catch for 0s
