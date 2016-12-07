@@ -123,7 +123,7 @@ private:
 
 	//recent additions
 
-	int optomisticUnchokingInterval; //m
+	//int optomisticUnchokingInterval; //m declared as float above
 	int prefferedNeighborDeterminationInterval; //p
 	int maxPrefferedNeighbors; //k - parameter on program start
 };
