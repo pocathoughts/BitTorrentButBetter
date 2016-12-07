@@ -215,7 +215,7 @@ std::vector<OURBYTE> Message::GenerateHavePayload(int index) {
 //each bit represents a piece that a message has
 //similar to have message but more encompassing
 std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector<bool> listOfPieces) {
-	//std::cout << "gen bitfieldpayload 1\n";
+	std::cout << "gen bitfieldpayload 1\n";
 	std::vector<OURBYTE> bitfieldPayload;
 	//The payload is a bitfield representing the pieces that have been successfully downloaded.
 	//can be of a variable length
@@ -223,9 +223,9 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 
 		//each bit represents if it has a piece, not each byte
 		//so the bitfieldPayload will be bitfield.size() / 8
-	//std::cout << "gen bitfieldpayload 2\n";
+	std::cout << "gen bitfieldpayload 2\n";
 	int initialNumberOfBytes = listOfPieces.size() / 8;
-	//std::cout << "gen bitfieldpayload 3\n";
+	std::cout << "gen bitfieldpayload 3\n";
 	bitfieldPayload.reserve(initialNumberOfBytes);
 
 	int counter = 0;
@@ -245,7 +245,7 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 		//std::cout << "push back done, bits: ";
 		//lib->printBitsInByte(bitfieldPayload.back());
 	}
-	//std::cout << "gen bitfieldpayload 5\n";
+	std::cout << "gen bitfieldpayload 5\n";
 
 	return bitfieldPayload;
 }
