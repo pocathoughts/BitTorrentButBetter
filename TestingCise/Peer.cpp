@@ -650,11 +650,12 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	std::cout << "Server waiting for client bitfield message 3\n";
 	SendClientBitfieldMessage(sockfd);
 	//waits for clients interested or not interested message, saves it for after sending back own message
-	bzero(message, 255);
-	n = read(sockfd, message, 256);
 	AwaitMessage(sockfd); //handles the received interested or not interested message
 	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
-
+	while (true)
+	{
+		AwaitMessage();
+	}
 	//await returned "interested" or "not interested" message (loop await general message)
 	//called in startServer()
 }
