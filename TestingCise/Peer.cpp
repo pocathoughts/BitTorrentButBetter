@@ -24,9 +24,8 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 
 	listOfPieces.reserve(numPieces);
 	//file name inits
-	std::cout << "HOLY FUCK";
 	
-	//dont do this its fucking evil
+	//dont do this its evil
 		//std::stringstream oss;
 		//oss << "peer_";
 		//oss << peerID; //WHY DOES THIS CAUSE MALLOC MEMORY ERROR
@@ -870,7 +869,6 @@ void Peer::startServerLinux()
 
 	while (TRUE)
 	{
-		std::cout << "AYYYY MOTHAFUCKERASDFASDGASDFGADSFADSFASF";
 		//clear the socket set
 		FD_ZERO(&readfds);
 
@@ -973,7 +971,7 @@ void Peer::startServerLinux()
 				//Echo back the message that came in
 				else
 				{
-					HandleMessage(client_socket[i], buffer);
+					HandleMssage(client_socket[i], buffer);
 					//set the string terminating NULL byte on the end of the data read
 					//buffer[valread] = '\0';
 					//send(sd, buffer, strlen(buffer), 0);
