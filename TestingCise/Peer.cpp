@@ -654,7 +654,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	DetermineInterested(returnMessage, sockfd); //sends either an interested or a not interested message	
 	while (true)
 	{
-		AwaitMessage();
+		AwaitMessage(sockfd);
 	}
 	//await returned "interested" or "not interested" message (loop await general message)
 	//called in startServer()
