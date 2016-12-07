@@ -953,7 +953,7 @@ void Peer::SendPieceMessage(Peer * otherPeer)
 	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
 	delete m;
 	//std::cout << "here2";
-	n = write(sockfd, message, strlen(message)); //sends the bitfield message
+	n = write(otherPeer->establishedSockfd, message, strlen(message)); //sends the bitfield message
 	if (n < 0)
 		error("ERROR writing to socket - sendPieceMessage");
 	else
