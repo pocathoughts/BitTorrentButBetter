@@ -442,7 +442,7 @@ void Peer::AwaitMessage(int sockfd)
 	char message[256];
 	//waits for a return message
 	bzero(message, 255);
-	while (strlen(message) < 10) //shouldnt have to do this, it should block
+	while (strlen(message) < 3) //shouldnt have to do this, it should block
 	{
 		n = recv(sockfd, message, 256, 0);
 	}
@@ -636,7 +636,7 @@ void Peer::WaitForClientBitfieldMessage(int sockfd)
 	bzero(message, 255);
 
 	//hacky
-	while (strlen(message) < 10)
+	while (strlen(message) < 3)
 	{
 		n = recv(sockfd, message, 256, 0);
 	}
@@ -665,7 +665,7 @@ void Peer::WaitForServerBitfieldMessage(int sockfd)
 	bzero(message, 255);
 
 	//hacky
-	while (strlen(message) < 10)
+	while (strlen(message) < 3)
 	{
 		n = recv(sockfd, message, 256, 0);
 	}
@@ -854,7 +854,7 @@ void Peer::SendInterestedMessage(int sockfd)
 		error("ERROR writing to socket - SendInterestedMessage");
 	else
 	{
-		std::cout << "server sent interested message to client\n";
+		std::cout << "sent interested\n";
 	}
 }
 
@@ -869,7 +869,7 @@ void Peer::SendNotInterestedMessage(int sockfd)
 		error("ERROR writing to socket - SendNotInterestedMessage");
 	else
 	{
-		std::cout << "server sent not interested message to client\n";
+		std::cout << "sent not interested message to client\n";
 	}
 }
 void Peer::receiveUnchokeMessage(std::vector<OURBYTE> messageStream)
