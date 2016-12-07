@@ -878,6 +878,7 @@ void Peer::startServerLinux()
 				max_sd = sd;
 		}
 
+		std::cout << "a";
 		//wait for an activity on one of the sockets , timeout is NULL , so wait indefinitely
 		activity = select(max_sd + 1, &readfds, NULL, NULL, NULL);
 
@@ -935,7 +936,6 @@ void Peer::startServerLinux()
 				}
 			}
 		}
-		std::cout << "a";
 		//else its some IO operation on some other socket :)
 		for (i = 0; i < max_clients; i++)
 		{
