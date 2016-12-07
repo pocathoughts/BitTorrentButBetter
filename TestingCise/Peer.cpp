@@ -55,17 +55,17 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			listOfPieces.push_back(false);
 		}
 		//put all 0s for an empty file
-		std::string subdir = "peer_" + itoa(peerID)c;
-		std::string subDirAndFile = "peer_" + itoa(peerID) + fileName;
+		std::string subdir = "peer_" + std::string(peerID);
+		std::string subDirAndFile = "peer_" + std::string(peerID) + fileName;
 		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 		if (-1 == dir_err)
 		{
 			printf("Error creating directory, already exists");
-			remove(subDirAndFile);
+			remove(subDirAndFile.c_str());
 		}
 
 		std::ofstream myfile;
-		myfile.open(subDirAndFile);
+		myfile.open(subDirAndFile.c_str());
 		for (int i = 0; i < fileSize; ++i)
 		{
 			myfile << "0"; //a char is one byte, fill all bytes empty for a full file
