@@ -446,9 +446,9 @@ void Peer::AwaitMessage(int sockfd)
 	{
 		n = recv(sockfd, message, 256, 0);
 	}
-	std::cout << "whoa\n";
 	std::vector<OURBYTE> messageStream = lib->GetByteStreamFromString(message);
 	int type = lib->GetMessageTypeFromStream(messageStream);
+	std::cout << "received message of type: " << type << std::endl;
 	if (type == 0)
 	{
 		//choke
