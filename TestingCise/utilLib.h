@@ -143,7 +143,7 @@ public:
 		int val = 0;
 		int modifier = 1;
 		//go backwards
-		for (std::vector<OURBYTE>::iterator i = stream.end() - 1; i > stream.begin(); i--)
+		for (std::vector<OURBYTE>::iterator i = stream.end(); i > stream.begin(); i--)
 		{
 			OURBYTE inv = reverseBitsInByte((*i));
 			val += modifier * (int)inv.to_ulong();
