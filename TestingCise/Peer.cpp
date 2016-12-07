@@ -30,6 +30,23 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		{
 			listOfPieces.push_back(true);
 		}
+		//put all 1s for a full file
+		std::string subdir = "peer_" + itoa(peerID)c;
+		std::string subDirAndFile = "peer_" + itoa(peerID) + fileName;
+		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		if (-1 == dir_err)
+		{
+			printf("Error creating directory, already exists");
+			remove(subDirAndFile);
+		}
+
+		std::ofstream myfile;
+		myfile.open(subDirAndFile);
+		for (int i = 0; i < fileSize; ++i)
+		{
+			myfile << "1"; //a char is one byte, fill all bytes full for a full file
+		}
+		myfile.close();
 	}
 	else
 	{
@@ -37,6 +54,23 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 		{
 			listOfPieces.push_back(false);
 		}
+		//put all 0s for an empty file
+		std::string subdir = "peer_" + itoa(peerID)c;
+		std::string subDirAndFile = "peer_" + itoa(peerID) + fileName;
+		const int dir_err = mkdir(subdir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+		if (-1 == dir_err)
+		{
+			printf("Error creating directory, already exists");
+			remove(subDirAndFile);
+		}
+
+		std::ofstream myfile;
+		myfile.open(subDirAndFile);
+		for (int i = 0; i < fileSize; ++i)
+		{
+			myfile << "0"; //a char is one byte, fill all bytes empty for a full file
+		}
+		myfile.close();
 	}
 
 	//see peer one has piece 0 
@@ -882,10 +916,12 @@ void Peer::receiveChokeMessage(std::vector<OURBYTE> messageStream)
 
 void Peer::receiveInterestedMessage(std::vector<OURBYTE> messageStream)
 {
+	interestedInMainPeer = true;
 }
 
 void Peer::receiveNotInterestedMessage(std::vector<OURBYTE> messageStream)
 {
+	interestedInMainPeer = false;
 }
 
 void Peer::receiveHaveMessage(std::vector<OURBYTE> messageStream)
@@ -899,3 +935,30 @@ void Peer::receiveRequestMessage(std::vector<OURBYTE> messageStream)
 void Peer::receivePieceMessage(std::vector<OURBYTE> messageStream)
 {
 }
+
+void Peer::UploadPieces()
+{
+	for (std::vector<Peer*>::iterator i = otherPeers.begin(); i < otherPeers.end(); i++)
+	{
+		if ((*i)->isPrefferedNeighbor || (*i)->isOptomisticallyUnchokedNeighbor)
+		{
+			SendPieceMessage((*i)); //maybe not a great idea TODO decide
+		}
+	}
+}
+void Peer::SendPieceMessage(Peer * otherPeer)
+{
+	Message * m = new Message(lib->PIECE, doesItHaveAnyPieces(), listOfPieces, otherPeer->requestedPieceIndex); //todo check requested piece index
+	//std::cout << "here1";
+	char * message = lib->GetStringFromByteStream(m->GetActualMessageByteStream());
+	delete m;
+	//std::cout << "here2";
+	n = write(sockfd, message, strlen(message)); //sends the bitfield message
+	if (n < 0)
+		error("ERROR writing to socket - sendPieceMessage");
+	else
+	{
+		std::cout << "piece message sent, requested index: " << otherPeer->requestedPieceIndex << std::endl;
+	}
+}
+

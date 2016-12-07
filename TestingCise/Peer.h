@@ -39,6 +39,15 @@ public:
 	bool SendHandshakeMessageFromClient(int sockfd);
 	void SendClientBitfieldMessage(int sockfd);
 	void SendServerBitfieldMessage(int sockfd);
+
+	//loop through otherPeers to get these
+	//useless for the main peer
+	//each whether or not the peer is interested in the main peer, 
+	bool interestedInMainPeer = false;
+	bool isPrefferedNeighbor = false;
+	bool isOptomisticallyUnchokedNeighbor = false;
+	int requestedPieceIndex = -1;
+
 private:
 	utilLib * lib;
 
@@ -107,5 +116,15 @@ private:
 	void receiveHaveMessage(std::vector<OURBYTE> messageStream);
 	void receiveRequestMessage(std::vector<OURBYTE> messageStream);
 	void receivePieceMessage(std::vector<OURBYTE> messageStream);
+
+	//recent funcs
+	void UploadPieces();
+
+
+	//recent additions
+
+	int optomisticUnchokingInterval; //m
+	int prefferedNeighborDeterminationInterval; //p
+	int maxPrefferedNeighbors; //k - parameter on program start
 };
 
