@@ -65,6 +65,7 @@ Message::Message(int type, bool hasPiece, std::vector<bool> listOfPieces, int re
 	//std::cout << "message constructor 2\n";
 	GenerateActualMessageByteStream(type, hasPiece, listOfPieces, requestedIndex);
 	std::cout << "message constructor completion type: " << type << std::endl;
+	delete lib;
 
 }
 Message::~Message()
