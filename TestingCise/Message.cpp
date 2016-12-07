@@ -407,6 +407,7 @@ HandshakeMessage::HandshakeMessage(int _peerID)
 	std::vector<OURBYTE> zeroBytes; //10 zero bytes
 	std::vector<OURBYTE> peerID; //4 bytes
 								 //�P2PFILESHARINGPROJ'
+	fullHandshakeMessage.reserve(32);
 	lib = new utilLib();
 	handshakeHeader = lib->GetByteStreamFromString("P2PFILESHARINGPROJ");
 
