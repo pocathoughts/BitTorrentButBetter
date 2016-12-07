@@ -105,7 +105,7 @@ public:
 			OURBYTE b(str[i]);
 			//std::cout << "or is it this: ";
 			word.push_back(b);
-			std::cout << word.size() << std::endl;
+			//std::cout << word.size() << std::endl;
 		}
 		return word;
 	}
