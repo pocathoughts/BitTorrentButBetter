@@ -22,7 +22,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 	numPieces = ceil((float)fileSize / (float)pieceSize);
 	lastPieceSize = fileSize % pieceSize;
 
-	listOfPieces.reserve(numPieces);
+	//listOfPieces.reserve(numPieces);
 
 	//file name inits
 	std::ostringstream oss;
