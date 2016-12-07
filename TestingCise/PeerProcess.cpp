@@ -174,18 +174,7 @@ void initializePeers(int commandLineInputPeerID)
 		{
 			std::getline(loadedFile, line);
 			std::vector<char*> m = parsePeerData(line, commandLineInputPeerID);
-			if (atoi(m[0]) == commandLineInputPeerID)
-			{
-				std::cout << "init main peer\n";
-				Peer * p = new Peer(atoi(m[0]), m[1], atoi(m[2]), atoi(m[3]), allPeers);
-				allPeers.push_back(p);
-			}
-			else
-			{
-				std::cout << "init non main peer: " << atoi(m[0]) << std::endl;
-				Peer * p = new Peer(atoi(m[0]), m[1], atoi(m[2]), atoi(m[3]));
-				allPeers.push_back(p);
-			}
+			
 		}
 	}
 	else
@@ -255,14 +244,27 @@ void initializePeerWithID(int peerID)
 	int index = 0;
 	if (loadedFile.is_open())
 	{
+		std::vector<char*> m;
+		std::cout << "before parsePeerData\n";
 		while (loadedFile.good())
 		{
 			std::getline(loadedFile, line);
-			if (index == indexInCFGFile)
-			{
-				parsePeerData(line, peerID);
-			}
+			m = parsePeerData(line, peerID);
 			index++;
+		}
+		//start processes
+		if (atoi(m[0]) == peerID)
+		{
+			std::cout << "init main peer\n";
+			Peer * p = new Peer(atoi(m[0]), m[1], atoi(m[2]), atoi(m[3]), allPeers);
+			allPeers.push_back(p);
+		}
+		//add to list
+		else
+		{
+			std::cout << "init non main peer: " << atoi(m[0]) << std::endl;
+			Peer * p = new Peer(atoi(m[0]), m[1], atoi(m[2]), atoi(m[3]));
+			allPeers.push_back(p);
 		}
 	}
 	else
