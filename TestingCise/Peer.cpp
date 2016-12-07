@@ -784,9 +784,8 @@ void Peer::startServerLinux()
 void Peer::startClientLinux(Peer * otherPeer)
 {
 	char * hostName = otherPeer->hostName;
+	hostName[strlen(hostName) - 1] = '\0'; //hacky space handling
 	int otherPeerID = otherPeer->peerID;
-	hostName = "lin114-00.cise.ufl.edu";
-	otherPeerID = 1001;
 	std::cout << "beginning start client\n";
 	std::cout << hostName << " " << otherPeerID;
 	int sockfd, portno, n;
