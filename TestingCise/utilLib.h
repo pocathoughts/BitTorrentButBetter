@@ -36,14 +36,14 @@ public:
 	typedef std::bitset<8> OURBYTE;
 	enum MessageType
 	{
-		CHOKE,
-		UNCHOKE,
-		INTERESTED,
-		NOTINTERESTED,
-		HAVE,
-		BITFIELD,
-		REQUEST,
-		PIECE
+		CHOKE, //0
+		UNCHOKE,//1
+		INTERESTED, //2
+		NOTINTERESTED, //3
+		HAVE, //4
+		BITFIELD, //5
+		REQUEST, //6
+		PIECE //7
 	};//
 	int GetMessageTypeFromStream(std::vector<OURBYTE> stream)
 	{
@@ -90,7 +90,7 @@ public:
 	}
 	std::vector<OURBYTE> GetByteStreamFromString(char * str)
 	{
-		std::cout << "called byte stream to string\n";
+		//std::cout << "called byte stream to string\n";
 		std::vector<OURBYTE> word;
 		word.reserve(32);
 		for (int i = 0; i < strlen(str); i++)
