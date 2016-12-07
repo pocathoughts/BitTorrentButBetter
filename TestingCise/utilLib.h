@@ -48,6 +48,7 @@ public:
 	int GetMessageTypeFromStream(std::vector<OURBYTE> stream)
 	{
 		//it's in the 5th byte
+		std::vector<OURBYTE> a;
 		a.reserve(1);
 		a.push_back(stream[4]);
 		return GetIntFromByteStream(a);
