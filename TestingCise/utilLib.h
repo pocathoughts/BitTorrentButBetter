@@ -124,6 +124,7 @@ public:
 		std::cout << "OH DEAR LORD FUCK\N";
 		//std::cout << stream.size();
 		char * str = (char*)malloc(stream.size());// new char[stream.size()]; //could be a long stream
+		std::cout << "OH DEAR LORD shit\N";
 		int index = 0;
 		OURBYTE b;
 		for (std::vector<OURBYTE>::iterator i = stream.begin(); i < stream.end(); i++)
