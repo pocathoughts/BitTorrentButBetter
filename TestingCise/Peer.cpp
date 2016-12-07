@@ -37,6 +37,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 
 	subdir = "peer_"  + std::to_string(peerID);
 	subDirAndFile = "peer_" + std::to_string(peerID) + "/" + fileName;
+	//subDirAndLog;// = "peer_" + std::to_string(peerID) + "/" + fileName;
 	//initialize all to false
 	if (fileComplete)
 	{
@@ -75,6 +76,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			remove(subDirAndFile.c_str());
 		}
 
+		//begin write to file
 		std::ofstream myfile;
 		myfile.open(subDirAndFile.c_str());
 		for (int i = 0; i < fileSize; ++i)
@@ -82,6 +84,7 @@ Peer::Peer(int _peerID, char * _hostName, int _portNum, bool _fileComplete, std:
 			myfile << "0"; //a char is one byte, fill all bytes empty for a full file
 		}
 		myfile.close();
+		//end write to file
 	}
 	//see peer one has piece 0 
 	//receive a message of 306/8 bytes with each bit representing a piece
