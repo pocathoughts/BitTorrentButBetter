@@ -408,7 +408,7 @@ HandshakeMessage::HandshakeMessage(int _peerID)
 	std::vector<OURBYTE> zeroBytes; //10 zero bytes
 	zeroBytes.reserve(10);
 	std::vector<OURBYTE> peerID; //4 bytes
-	zeroBytes.reserve(4);
+	peerID.reserve(4);
 	//�P2PFILESHARINGPROJ'
 	fullHandshakeMessage.reserve(32);
 	lib = new utilLib();
