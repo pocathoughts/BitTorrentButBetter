@@ -99,12 +99,12 @@ public:
 			if (str[i] == '$')
 			{
 				OURBYTE b(0); //was b
-				//std::cout << "is this the problem\n";
+				std::cout << "is this the problem\n";
 				word.push_back(b);
 				continue;
 			}
 			OURBYTE b(str[i]);
-			//std::cout << "or is it this: ";
+			std::cout << "or is it this: ";
 			word.push_back(b);
 			//std::cout << word.size() << std::endl;
 		}
