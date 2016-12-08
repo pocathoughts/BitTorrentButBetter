@@ -161,7 +161,7 @@ std::vector<OURBYTE> Message::GeneratePayload(int type, bool hasPiece, std::vect
 	else if (type == 7) {
 		//piece message
 		OURBYTE NEEDSTOBEIMPLEMENTED;
-		payload = GeneratePiecePayload(NEEDSTOBEIMPLEMENTED);
+		payload = GeneratePiecePayload(requestedIndex);
 		return payload;
 	}
 	else {
@@ -257,40 +257,144 @@ std::vector<OURBYTE> Message::GenerateBitfieldPayload(bool hasPiece, std::vector
 //once you have sent your Interested message and received an
 //Unchoke message, you can start requesting pieces!
 std::vector<OURBYTE> Message::GenerateRequestPayload(int requestedIndex) {
-	//4 byte piece index
+	//4 byte piece index of the piece you want!
 	//4 byte block offset
 	//4 byte block length
 
-	// this will be the index of the piece we are requesting
+	//Note that if the piece_length is not evenly divisible by the block
+	//request size, the last block of each piece will be smaller than
+	//the normal block size, It is likely that at least the last block
+	//of the last piece will be smaller than the block request size
+	//(and the last piece smaller than the piece_length)
+
+	OURBYTE indexByte;
 	std::vector<OURBYTE> requestPayload;
-	for (int i = 5; i < 9; i++) {
-		//fullActualMessage[i] = indexPieces >> (24-((i-5)*8));
+	std::vector<int> bitRepresentation;
+	bitRepresentation = convert(requestedIndex);
+
+	//below the payload has the 4 byte piece index
+	requestPayload = lib->convertBitsToBytes(bitRepresentation);
+
+	/*
+	//next we need to generate the 4byte offset...
+	//but how do we determine the offset?
+	//NEEDS TO BE IMPLEMENTED, FOR NOW ALL ZEROS
+
+	OURBYTE first;
+	OURBYTE second;
+	OURBYTE third;
+	OURBYTE fourth;
+
+	for(int i = 0; i < 8; i++){
+	lib->setBit(first, i, 0);
+	lib->setBit(second, i, 0);
+	lib->setBit(third, i, 0);
+	lib->setBit(fourth, i, 0);
 	}
+
+	requestPayload.push_back(first);
+	requestPayload.push_back(second);
+	requestPayload.push_back(third);
+	requestPayload.push_back(fourth);
+
+	//now we need to give the 4 byte block length
+	//intenet reccomends 2^14 power
+	//which is 00000000 00000100 00000000 00000000
+
+	OURBYTE firstByte;
+	OURBYTE secondByte;
+	OURBYTE thirdByte;
+	OURBYTE fourthByte;
+
+	for(int i = 0; i < 8; i++){
+	lib->setBit(firstByte, i, 0);
+	lib->setBit(thirdByte, i, 0);
+	lib->setBit(fourthByte, i, 0);
+	}
+	for(int i = 0; i < 8; i++){
+	if(i == 5){
+	lib->setBit(secondByte, i, 1);
+	}
+	lib->setBit(secondByte, i, 0);
+	}
+
+	requestPayload.push_back(firstByte);
+	requestPayload.push_back(secondByte);
+	requestPayload.push_back(thirdByte);
+	requestPayload.push_back(fourthByte);
+	*/
+
 	return requestPayload;
 }
 
-//in the case of type 7
-//A peer should respond to a Request message with a ‘Piece’ message that includes the block requested.
-std::vector<OURBYTE> Message::GeneratePiecePayload(/*variable indexPieces, variable content*/ OURBYTE pieceData) {
-	//4 byte piece index
-	//4 byte block offset//4 byte piece index field and contents
-	//piece: <len=0009+X><id=7><index><begin><block>
-	//The piece message is variable length, where X is the length of the block.The payload contains the following information :
-//index: integer specifying the zero - based piece index
-	//begin : integer specifying the zero - based byte offset within the piece
-	//block : block of data, which is a subset of the piece specified by index.
-	std::vector<OURBYTE> piecePayload;
 
-	// fill the 4 byte piece index field
-	for (int i = 5; i < 9; i++) {
-		//fullActualMessage[i] = indexPieces >> (24-((i-5)*8));
+//in the case of type 7
+//A peer should respond to a Request message with contents of piece
+std::vector<OURBYTE> Message::GeneratePiecePayload(int pieceIndex) {
+	//4 byte piece index
+	//4 byte block offset
+	//variable length block containing the raw bytes for the requested piece.
+	//The length of this should be the same as the length requested.
+	//which we used 2^14 power
+
+
+	//add in the piece index
+	std::vector<OURBYTE> piecePayload;
+	std::vector<int> bitRepresentation;
+	bitRepresentation = convert(pieceIndex);
+
+	//below the payload has the 4 byte piece index
+	piecePayload = lib->convertBitsToBytes(bitRepresentation);
+
+	/*
+	//next we need to generate the 4byte offset...
+	//but how do we determine the offset?
+	//NEEDS TO BE IMPLEMENTED, FOR NOW ALL ZEROS
+
+	OURBYTE first;
+	OURBYTE second;
+	OURBYTE third;
+	OURBYTE fourth;
+
+	for(int i = 0; i < 8; i++){
+	lib->setBit(first, i, 0);
+	lib->setBit(second, i, 0);
+	lib->setBit(third, i, 0);
+	lib->setBit(fourth, i, 0);
 	}
 
+	piecePayload.push_back(first);
+	piecePayload.push_back(second);
+	piecePayload.push_back(third);
+	piecePayload.push_back(fourth);
+	*/
 
+	//now we need to give the 4 byte block length
+	//because it said to make it same length as what was requested
+	//intenet reccomends 2^14 power
+	//which is 00000000 00000100 00000000 00000000
 
-	//adding in the last byte of the payload
-	//which should be the actual data in the piece
-	piecePayload.push_back(pieceData);
+	OURBYTE firstByte;
+	OURBYTE secondByte;
+	OURBYTE thirdByte;
+	OURBYTE fourthByte;
+
+	for (int i = 0; i < 8; i++) {
+		lib->setBit(firstByte, i, 0);
+		lib->setBit(thirdByte, i, 0);
+		lib->setBit(fourthByte, i, 0);
+	}
+	for (int i = 0; i < 8; i++) {
+		if (i == 5) {
+			lib->setBit(secondByte, i, 1);
+		}
+		lib->setBit(secondByte, i, 0);
+	}
+
+	piecePayload.push_back(firstByte);
+	piecePayload.push_back(secondByte);
+	piecePayload.push_back(thirdByte);
+	piecePayload.push_back(fourthByte);
 
 	return piecePayload;
 }
