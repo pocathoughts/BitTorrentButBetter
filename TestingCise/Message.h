@@ -20,7 +20,7 @@ private:
 	std::vector<OURBYTE> GenerateHavePayload(int index);
 	std::vector<OURBYTE> GenerateRequestPayload(int requestedLength);
 	//std::vector<OURBYTE> GeneratePiecePayload();
-    std::vector<OURBYTE> GeneratePiecePayload(OURBYTE pieceData);
+    std::vector<OURBYTE> GeneratePiecePayload(int pieceIndex);
 	bool hasPayload(int messageType);
 	int messageType;
 
