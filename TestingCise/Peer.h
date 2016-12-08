@@ -125,7 +125,7 @@ private:
 
 	//recent adds
 	std::string subDirAndFile;
-	std::string* subDirAndLog;
+	std::string subDirAndLog;
 	std::string subdir;
 
 	//
